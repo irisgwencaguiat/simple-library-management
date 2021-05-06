@@ -5,7 +5,7 @@ exports.up = function (knex) {
     table.string("last_name");
     table.string("username");
     table.string("password");
-    table.string("type");
+    table.string("account_type");
     table.boolean("is_deleted").defaultTo(false);
     table.timestamp("created_at").defaultTo(knex.fn.now());
   });
