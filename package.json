@@ -4,7 +4,9 @@
   "description": "",
   "main": "app/server.js",
   "scripts": {
-    "dev:server": "nodemon app/server"
+    "dev:backend": "nodemon app/server",
+    "dev:frontend": "npm run serve --prefix web-client",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\""
   },
   "repository": {
     "type": "git",
@@ -35,6 +37,7 @@
     "slugify": "^1.4.7"
   },
   "devDependencies": {
+    "concurrently": "^6.0.2",
     "nodemon": "^2.0.7",
     "prettier": "^2.2.1"
   }
