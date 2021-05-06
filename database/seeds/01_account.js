@@ -11,7 +11,7 @@ exports.seed = function (knex) {
           last_name: "Admin",
           username: "admin",
           password: hashPassword("admin"),
-          type: "admin",
+          account_type: "admin",
         },
       ]);
     });

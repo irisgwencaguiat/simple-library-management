@@ -1,6 +1,12 @@
 const knex = require("../../../database/knex");
 
 const accountModel = {
+  async createAccount(input) {
+    return await knex("account")
+      .insert({ ...input })
+      .returning(["id"])
+      .then((result) => result[0]);
+  },
   async getDetails(id) {
     return await knex("account")
       .where("id", id)
