@@ -100,7 +100,16 @@
             :loading="isCreateAccountStart"
             :disabled="!isFormValid"
             v-if="isFormDialogCreateOperation"
-            >Submit</v-btn
+            >Create</v-btn
+          >
+          <v-btn
+            color="primary"
+            block
+            @click="updateAccount"
+            :loading="isUpdateAccountStart"
+            :disabled="!isFormValid"
+            v-if="isFormDialogUpdateOperation"
+            >Update</v-btn
           >
         </v-card-actions>
       </v-card>
@@ -113,6 +122,7 @@ import CustomPasswordInput from "@/components/custom/PasswordInput";
 import {
   CREATE_ACCOUNT,
   GET_ACCOUNTS,
+  UPDATE_ACCOUNT,
 } from "@/store/modules/account/account-types";
 import dateMixin from "@/mixins/date-mixin";
 import { SET_NOTIFICATION_SNACKBAR_CONFIGURATION } from "@/store/modules/configuration/configuration-types";
@@ -136,6 +146,7 @@ export default {
       defaultForm,
       formDialogOperation: null,
       isCreateAccountStart: false,
+      isUpdateAccountStart: false,
       error: false,
       errorMessage: null,
       isGetAccountsStart: false,
@@ -154,7 +165,11 @@ export default {
 
     isFormValid() {
       const { firstName, lastName, username, password } = this.form;
-      return firstName && lastName && username && password;
+      const conditions = {
+        create: firstName && lastName && username && password,
+        update: firstName && lastName,
+      };
+      return conditions[this.formDialogOperation];
     },
 
     tableHeaders() {
@@ -256,6 +271,35 @@ export default {
       this.error = false;
       this.errorMessage = null;
       this.isCreateAccountStart = false;
+    },
+
+    async updateAccount() {
+      this.isUpdateAccountStart = true;
+      const payload = {
+        id: this.selectedAccount.id,
+        firstName: this.form.firstName.trim() || null,
+        lastName: this.form.lastName.trim() || null,
+      };
+      const { success, message } = await this.$store.dispatch(
+        UPDATE_ACCOUNT,
+        payload
+      );
+      if (!success) {
+        this.isUpdateAccountStart = false;
+        this.error = true;
+        this.errorMessage = message;
+        return;
+      }
+      await this.getAccounts();
+      this.isFormDialogOpen = false;
+      this.$store.commit(SET_NOTIFICATION_SNACKBAR_CONFIGURATION, {
+        text: message,
+        color: "success",
+      });
+      this.form = Object.assign({}, this.defaultForm);
+      this.error = false;
+      this.errorMessage = null;
+      this.isUpdateAccountStart = false;
     },
 
     async getAccounts() {
