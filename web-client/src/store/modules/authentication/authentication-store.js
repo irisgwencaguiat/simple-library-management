@@ -16,7 +16,6 @@ const authenticationStore = {
 
   mutations: {
     [SET_AUTHENTICATION_DETAILS](state, { user, token }) {
-      console.log({ user, token });
       state.user = Object.assign({}, user);
       state.token = token;
       state.isAuthenticated = true;
@@ -41,8 +40,8 @@ const authenticationStore = {
           password,
         });
         const result = response.data;
-        const { user, token } = result.data;
-        commit(SET_AUTHENTICATION_DETAILS, { user, token });
+        const { user, access_token } = result.data;
+        commit(SET_AUTHENTICATION_DETAILS, { user, token: access_token });
         return result;
       } catch (error) {
         commit(PURGE_AUTHENTICATION_DETAILS);

@@ -113,8 +113,7 @@ export default {
       this.error = false;
       this.errorMessage = null;
       this.isLoginStart = false;
-      console.log(message);
-      // await this.$router.push({ name: "admin-dashboard-view" });
+      await this.$router.push({ name: "dashboard-admin-home-view" });
     },
   },
 };
