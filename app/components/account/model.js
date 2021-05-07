@@ -25,6 +25,12 @@ const accountModel = {
       .where("id", id)
       .then((result) => result[0].password || null);
   },
+
+  async getAccounts() {
+    return await knex("account")
+      .where("is_deleted", false)
+      .then((result) => result);
+  },
 };
 
 module.exports = accountModel;

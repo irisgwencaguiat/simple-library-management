@@ -51,6 +51,34 @@ const accountController = {
       );
     }
   },
+  async getAccounts(request, response) {
+    try {
+      const accounts = await accountModel.getAccounts();
+      const accountsDetails = await Promise.all(
+        accounts.map((data) => {
+          const account = data;
+          delete account.password;
+          return account;
+        })
+      );
+      response.status(200).json(
+        httpResource({
+          success: true,
+          code: 200,
+          message: "Record has been created successfully.",
+          data: accountsDetails,
+        })
+      );
+    } catch (error) {
+      response.status(400).json(
+        httpResource({
+          success: false,
+          code: 400,
+          message: error,
+        })
+      );
+    }
+  },
 };
 
 module.exports = accountController;

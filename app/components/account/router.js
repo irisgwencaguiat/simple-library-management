@@ -4,9 +4,15 @@ const accountController = require("./controller");
 const middleware = require("../../middleware");
 
 router.post(
-  "/create",
+  "/",
   middleware.authentication.passportAuthenticate,
   accountController.createAccount
+);
+
+router.get(
+  "/",
+  middleware.authentication.passportAuthenticate,
+  accountController.getAccounts
 );
 
 module.exports = router;
