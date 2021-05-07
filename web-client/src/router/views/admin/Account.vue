@@ -38,7 +38,7 @@
         <v-btn icon @click="openUpdateFormDialog(item)">
           <v-icon> mdi-pencil </v-icon>
         </v-btn>
-        <v-btn icon>
+        <v-btn icon @click="openDeleteAlertDialog(item)">
           <v-icon> mdi-trash-can </v-icon>
         </v-btn>
       </template>
@@ -114,6 +114,14 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <custom-alert-dialog
+      :is-open.sync="isDeleteAlertDialogOpen"
+      title="Delete Admin"
+      type="error"
+      text="This actions is irreversible, click confirm if you are sure."
+      :loading="isDeleteAdminStart"
+      :action="deleteAdmin"
+    ></custom-alert-dialog>
   </v-card>
 </template>
 
@@ -126,6 +134,7 @@ import {
 } from "@/store/modules/account/account-types";
 import dateMixin from "@/mixins/date-mixin";
 import { SET_NOTIFICATION_SNACKBAR_CONFIGURATION } from "@/store/modules/configuration/configuration-types";
+import CustomAlertDialog from "@/components/custom/AlertDialog";
 
 const defaultForm = {
   firstName: null,
@@ -135,7 +144,7 @@ const defaultForm = {
 };
 
 export default {
-  components: { CustomPasswordInput },
+  components: { CustomAlertDialog, CustomPasswordInput },
 
   mixins: [dateMixin],
 
@@ -153,6 +162,8 @@ export default {
       accounts: [],
       search: null,
       selectedAccount: null,
+      isDeleteAlertDialogOpen: false,
+      isDeleteAdminStart: false,
     };
   },
 
@@ -242,6 +253,11 @@ export default {
       this.isFormDialogOpen = false;
     },
 
+    openDeleteAlertDialog(account) {
+      this.selectedAccount = Object.assign({}, account);
+      this.isDeleteAlertDialogOpen = true;
+    },
+
     async createAccount() {
       this.isCreateAccountStart = true;
       const payload = {
@@ -307,6 +323,10 @@ export default {
       const { data } = await this.$store.dispatch(GET_ACCOUNTS, "admin");
       this.accounts = data;
       this.isGetAccountsStart = false;
+    },
+
+    async deleteAdmin() {
+      console.log(this.selectedAccount);
     },
   },
 
