@@ -35,7 +35,7 @@
         {{ formatCreatedAt(item.created_at) }}
       </template>
       <template v-slot:item.actions="{ item }">
-        <v-btn icon>
+        <v-btn icon @click="openUpdateFormDialog(item)">
           <v-icon> mdi-pencil </v-icon>
         </v-btn>
         <v-btn icon>
@@ -48,7 +48,7 @@
         <v-card-title>
           <span>{{ formDialogTitle }}</span>
           <v-spacer> </v-spacer>
-          <v-btn icon @click="isFormDialogOpen = false">
+          <v-btn icon @click="closeUpdateFormDialog">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-card-title>
@@ -78,6 +78,7 @@
                 label="Username"
                 outlined
                 v-model="form.username"
+                :readonly="isFormDialogUpdateOperation"
               ></v-text-field>
             </v-col>
             <v-col cols="12">
@@ -86,6 +87,7 @@
                 outlined
                 :password.sync="form.password"
                 :action="createAccount"
+                v-if="isFormDialogCreateOperation"
               ></custom-password-input>
             </v-col>
           </v-row>
@@ -138,6 +140,7 @@ export default {
       isGetAccountsStart: false,
       accounts: [],
       search: null,
+      selectedAccount: null,
     };
   },
 
@@ -179,6 +182,14 @@ export default {
       ];
     },
 
+    isFormDialogUpdateOperation() {
+      return this.formDialogOperation === "update";
+    },
+
+    isFormDialogCreateOperation() {
+      return this.formDialogOperation === "create";
+    },
+
     tableItems() {
       if (!this.search) return this.accounts;
       return this.accounts.filter((account) => {
@@ -195,6 +206,24 @@ export default {
     openCreateFormDialog() {
       this.formDialogOperation = "create";
       this.isFormDialogOpen = true;
+    },
+
+    openUpdateFormDialog(account) {
+      this.formDialogOperation = "update";
+      this.selectedAccount = Object.assign({}, account);
+      const { first_name, last_name, username } = account;
+      this.form = Object.assign(this.form, {
+        firstName: first_name,
+        lastName: last_name,
+        username,
+      });
+      this.isFormDialogOpen = true;
+    },
+
+    closeUpdateFormDialog() {
+      this.formDialogOperation = "create";
+      this.form = Object.assign({}, this.defaultForm);
+      this.isFormDialogOpen = false;
     },
 
     async createAccount() {
