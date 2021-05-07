@@ -1,5 +1,8 @@
 import apiService from "@/services/api-service";
-import { CREATE_ACCOUNT } from "@/store/modules/account/account-types";
+import {
+  CREATE_ACCOUNT,
+  GET_ACCOUNTS,
+} from "@/store/modules/account/account-types";
 
 const accountStore = {
   mutations: {},
@@ -17,6 +20,17 @@ const accountStore = {
           username,
           password,
         });
+        return response.data;
+      } catch (error) {
+        return error.response.data;
+      }
+    },
+
+    async [GET_ACCOUNTS]({ commit }, filter) {
+      try {
+        const params = new URLSearchParams();
+        if (filter) params.append("filter", filter);
+        const response = await apiService.get("/account", { params });
         return response.data;
       } catch (error) {
         return error.response.data;
