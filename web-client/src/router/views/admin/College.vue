@@ -26,11 +26,6 @@
           ></v-text-field>
         </v-card-text>
       </template>
-      <template v-slot:item.name="{ item }">
-        <span class="text-capitalize">
-          {{ item.first_name }} {{ item.last_name }}
-        </span>
-      </template>
       <template v-slot:item.created_at="{ item }">
         {{ formatCreatedAt(item.created_at) }}
       </template>
@@ -169,8 +164,8 @@ export default {
           sortable: false,
         },
         {
-          text: "Username",
-          value: "username",
+          text: "Short Name",
+          value: "short_name",
           sortable: false,
         },
         {
@@ -252,7 +247,7 @@ export default {
         this.errorMessage = message;
         return;
       }
-      // await this.getColleges();
+      await this.getColleges();
       this.isFormDialogOpen = false;
       this.$store.commit(SET_NOTIFICATION_SNACKBAR_CONFIGURATION, {
         text: message,
@@ -319,7 +314,7 @@ export default {
   },
 
   async created() {
-    // await this.getColleges();
+    await this.getColleges();
   },
 };
 </script>

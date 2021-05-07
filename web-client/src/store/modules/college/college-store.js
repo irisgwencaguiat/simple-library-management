@@ -33,11 +33,9 @@ const collegeStore = {
       }
     },
 
-    async [GET_COLLEGES](_, filter) {
+    async [GET_COLLEGES]() {
       try {
-        const params = new URLSearchParams();
-        if (filter) params.append("filter", filter);
-        const response = await apiService.get("/college", { params });
+        const response = await apiService.get("/college");
         return response.data;
       } catch (error) {
         return error.response.data;
