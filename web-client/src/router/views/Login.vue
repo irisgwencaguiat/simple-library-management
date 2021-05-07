@@ -100,7 +100,7 @@ export default {
         password: this.form.password || null,
       };
       this.isLoginStart = true;
-      const { success, message, data } = await this.$store.dispatch(
+      const { success, message } = await this.$store.dispatch(
         AUTHENTICATION_LOGIN,
         payload
       );
