@@ -42,7 +42,6 @@ const accountController = {
         })
       );
     } catch (error) {
-      console.log(error);
       response.status(400).json(
         httpResource({
           success: false,
