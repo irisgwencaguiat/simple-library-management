@@ -12,6 +12,11 @@ const collegeModel = {
       .where("id", id)
       .then((result) => result[0]);
   },
+  async getColleges() {
+    return await knex("college")
+      .where("is_deleted", false)
+      .then((result) => result);
+  },
 };
 
 module.exports = collegeModel;

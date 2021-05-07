@@ -25,6 +25,27 @@ const collegeController = {
       );
     }
   },
+  async getColleges(request, response) {
+    try {
+      const colleges = await collegeModel.getColleges();
+      response.status(200).json(
+        httpResource({
+          success: true,
+          code: 200,
+          message: "Record has been created successfully.",
+          data: colleges,
+        })
+      );
+    } catch (error) {
+      response.status(400).json(
+        httpResource({
+          success: false,
+          code: 400,
+          message: error,
+        })
+      );
+    }
+  },
 };
 
 module.exports = collegeController;

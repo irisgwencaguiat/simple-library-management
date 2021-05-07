@@ -9,4 +9,9 @@ router.post(
   collegeController.createCollege
 );
 
+router.get(
+  "/",
+  middleware.authentication.passportAuthenticate,
+  collegeController.getColleges
+);
 module.exports = router;
