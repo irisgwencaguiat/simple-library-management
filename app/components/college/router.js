@@ -19,4 +19,10 @@ router.get(
   middleware.authentication.passportAuthenticate,
   collegeController.getCollegeById
 );
+
+router.delete(
+  "/:id",
+  middleware.authentication.passportAuthenticate,
+  collegeController.deleteCollege
+);
 module.exports = router;

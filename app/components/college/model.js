@@ -24,6 +24,9 @@ const collegeModel = {
       .andWhere("id", id)
       .then((result) => result[0] || null);
   },
+  async deleteCollege(id) {
+    await knex("college").where("id", id).update("is_deleted", true);
+  },
 };
 
 module.exports = collegeModel;
