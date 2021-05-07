@@ -24,6 +24,11 @@
           ></v-text-field>
         </v-card-text>
       </template>
+      <template v-slot:item.name="{ item }">
+        <span class="text-capitalize">
+          {{ item.first_name }} {{ item.last_name }}
+        </span>
+      </template>
       <template v-slot:item.created_at="{ item }">
         {{ formatCreatedAt(item.created_at) }}
       </template>
