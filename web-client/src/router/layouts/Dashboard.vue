@@ -91,6 +91,11 @@ export default {
             to: { name: "dashboard-admin-account-view" },
             icon: "mdi-account",
           },
+          {
+            text: "Colleges",
+            to: { name: "dashboard-admin-college-view" },
+            icon: "mdi-school",
+          },
         ],
       };
       return navigations[this.user.account_type];

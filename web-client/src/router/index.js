@@ -21,10 +21,17 @@ const routes = [
         name: "dashboard-admin-home-view",
         component: () => import("@/router/views/admin/Home"),
       },
+
       {
         path: "admin",
         name: "dashboard-admin-account-view",
         component: () => import("@/router/views/admin/Account"),
+      },
+
+      {
+        path: "college",
+        name: "dashboard-admin-college-view",
+        component: () => import("@/router/views/admin/College"),
       },
     ],
     meta: {

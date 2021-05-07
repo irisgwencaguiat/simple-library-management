@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import authenticationStore from "@/store/modules/authentication/authentication-store";
 import accountStore from "@/store/modules/account/account-store";
 import configurationStore from "@/store/modules/configuration/configuration-store";
+import collegeStore from "@/store/modules/college/college-store";
 
 Vue.use(Vuex);
 
@@ -11,5 +12,6 @@ export default new Vuex.Store({
     authentication: authenticationStore,
     account: accountStore,
     configuration: configurationStore,
+    college: collegeStore,
   },
 });
