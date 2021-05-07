@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app :style="{ backgroundColor: '#f5f5f5' }">
     <v-app-bar app flat color="primary" dark>
       <v-container>
         <v-toolbar-title>

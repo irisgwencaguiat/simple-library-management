@@ -21,6 +21,11 @@ const routes = [
         name: "dashboard-admin-home-view",
         component: () => import("@/router/views/admin/Home"),
       },
+      {
+        path: "admin",
+        name: "dashboard-admin-account-view",
+        component: () => import("@/router/views/admin/Account"),
+      },
     ],
     meta: {
       requiresAuth: true,
