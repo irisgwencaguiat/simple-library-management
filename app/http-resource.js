@@ -1,15 +1,12 @@
 const httpResource = ({ success, code, message, data }) => {
-    let errorMessage = message;
-    console.log(errorMessage);
-    if (typeof message === "object") errorMessage = "Server error.";
-    return {
-        success,
-        code,
-        success_message: success ? message : null,
-        data: success ? data : null,
-        error: !success,
-        error_message: !success ? errorMessage : null,
-    };
+  if (typeof message === "object") message = "Server error.";
+  return {
+    success,
+    code,
+    message: message || null,
+    data: success ? data : null,
+    error: !success,
+  };
 };
 
 module.exports = httpResource;
