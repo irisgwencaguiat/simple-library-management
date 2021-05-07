@@ -55,15 +55,17 @@
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
+    <global-notification-snackbar></global-notification-snackbar>
   </v-app>
 </template>
 
 <script>
 import { PURGE_AUTHENTICATION_DETAILS } from "@/store/modules/authentication/authentication-types";
+import GlobalNotificationSnackbar from "@/components/global/NotificationSnackbar";
 
 export default {
   name: "dashboard-layout",
-
+  components: { GlobalNotificationSnackbar },
   data() {
     return {
       drawer: true,

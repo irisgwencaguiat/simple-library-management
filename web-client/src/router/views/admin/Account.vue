@@ -85,6 +85,7 @@
                 label="Password"
                 outlined
                 :password.sync="form.password"
+                :action="createAccount"
               ></custom-password-input>
             </v-col>
           </v-row>
@@ -111,6 +112,7 @@ import {
   GET_ACCOUNTS,
 } from "@/store/modules/account/account-types";
 import dateMixin from "@/mixins/date-mixin";
+import { SET_NOTIFICATION_SNACKBAR_CONFIGURATION } from "@/store/modules/configuration/configuration-types";
 
 const defaultForm = {
   firstName: null,
@@ -216,6 +218,10 @@ export default {
       }
       await this.getAccounts();
       this.isFormDialogOpen = false;
+      this.$store.commit(SET_NOTIFICATION_SNACKBAR_CONFIGURATION, {
+        text: message,
+        color: "success",
+      });
       this.form = Object.assign({}, this.defaultForm);
       this.error = false;
       this.errorMessage = null;
