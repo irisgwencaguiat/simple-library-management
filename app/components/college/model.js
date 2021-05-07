@@ -10,12 +10,19 @@ const collegeModel = {
   async getDetails(id) {
     return await knex("college")
       .where("id", id)
-      .then((result) => result[0]);
+      .then((result) => result[0] || null);
   },
   async getColleges() {
     return await knex("college")
       .where("is_deleted", false)
-      .then((result) => result);
+      .orderBy("created_at", "desc")
+      .then((result) => result || []);
+  },
+  async getCollege(id) {
+    return await knex("college")
+      .where("is_deleted", false)
+      .andWhere("id", id)
+      .then((result) => result[0] || null);
   },
 };
 

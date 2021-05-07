@@ -29,6 +29,15 @@ const accountModel = {
   async getAccounts() {
     return await knex("account")
       .where("is_deleted", false)
+      .orderBy("created_at", "desc")
+      .then((result) => result || []);
+  },
+
+  async filteredAccounts(filter) {
+    return await knex("account")
+      .where("is_deleted", false)
+      .andWhere("account_type", filter)
+      .orderBy("created_at", "desc")
       .then((result) => result || []);
   },
 

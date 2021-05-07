@@ -14,4 +14,9 @@ router.get(
   middleware.authentication.passportAuthenticate,
   collegeController.getColleges
 );
+router.get(
+  "/:id",
+  middleware.authentication.passportAuthenticate,
+  collegeController.getCollegeById
+);
 module.exports = router;
