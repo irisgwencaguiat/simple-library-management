@@ -53,7 +53,14 @@ const accountController = {
   },
   async getAccounts(request, response) {
     try {
-      const accounts = await accountModel.getAccounts();
+      const filter = request.query.filter || null;
+      let accounts = [];
+      if (filter) {
+        accounts = await accountModel.filteredAccounts(filter);
+      }
+      if (!filter) {
+        accounts = await accountModel.getAccounts();
+      }
       const accountsDetails = await Promise.all(
         accounts.map((data) => {
           const account = data;
