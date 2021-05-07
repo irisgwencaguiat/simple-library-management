@@ -21,6 +21,8 @@
             label="Search"
             outlined
             append-icon="mdi-magnify"
+            v-model="search"
+            autofocus
           ></v-text-field>
         </v-card-text>
       </template>
@@ -133,6 +135,7 @@ export default {
       errorMessage: null,
       isGetAccountsStart: false,
       accounts: [],
+      search: null,
     };
   },
 
@@ -175,7 +178,14 @@ export default {
     },
 
     tableItems() {
-      return this.accounts;
+      if (!this.search) return this.accounts;
+      return this.accounts.filter((account) => {
+        const { first_name, last_name, username } = account;
+        const keyword = this.search.toLowerCase().trim();
+        if (first_name.toLowerCase().trim().includes(keyword)) return account;
+        if (last_name.toLowerCase().trim().includes(keyword)) return account;
+        if (username.toLowerCase().trim().includes(keyword)) return account;
+      });
     },
   },
 
