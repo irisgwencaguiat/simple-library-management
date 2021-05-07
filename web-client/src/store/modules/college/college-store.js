@@ -20,12 +20,12 @@ const collegeStore = {
       }
     },
 
-    async [UPDATE_COLLEGE](_, { id, firstName, lastName }) {
+    async [UPDATE_COLLEGE](_, { id, name, shortName }) {
       try {
         const response = await apiService.put("/college", {
           id,
-          first_name: firstName,
-          last_name: lastName,
+          name,
+          short_name: shortName,
         });
         return response.data;
       } catch (error) {

@@ -211,11 +211,10 @@ export default {
     openUpdateFormDialog(college) {
       this.formDialogOperation = "update";
       this.selectedCollege = Object.assign({}, college);
-      const { first_name, last_name, username } = college;
+      const { name, short_name } = college;
       this.form = Object.assign(this.form, {
-        firstName: first_name,
-        lastName: last_name,
-        username,
+        name,
+        shortName: short_name,
       });
       this.isFormDialogOpen = true;
     },
@@ -263,8 +262,8 @@ export default {
       this.isUpdateCollegeStart = true;
       const payload = {
         id: this.selectedCollege.id,
-        firstName: this.form.firstName.trim() || null,
-        lastName: this.form.lastName.trim() || null,
+        name: this.form.name.trim() || null,
+        shortName: this.form.shortName.trim() || null,
       };
       const { success, message } = await this.$store.dispatch(
         UPDATE_COLLEGE,
