@@ -124,6 +124,34 @@ const accountController = {
       );
     }
   },
+  async updateUserDetails(request, response) {
+    try {
+      const { id, first_name, last_name } = request.body;
+      const payload = {};
+      if (first_name) payload.first_name = first_name;
+      if (last_name) payload.last_name = last_name;
+      const updatedAccount = await accountModel.updateAccount(id, payload);
+      if (!updatedAccount) throw "Account cannot be found.";
+      const accountDetails = await accountModel.getDetails(updatedAccount.id);
+      delete accountDetails.password;
+      response.status(200).json(
+        httpResource({
+          success: true,
+          code: 200,
+          message: "Record has been created successfully.",
+          data: accountDetails,
+        })
+      );
+    } catch (error) {
+      response.status(400).json(
+        httpResource({
+          success: false,
+          code: 400,
+          message: error,
+        })
+      );
+    }
+  },
 };
 
 module.exports = accountController;

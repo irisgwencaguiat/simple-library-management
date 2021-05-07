@@ -26,4 +26,10 @@ router.delete(
   middleware.authentication.passportAuthenticate,
   accountController.deleteAccount
 );
+
+router.put(
+  "/",
+  middleware.authentication.passportAuthenticate,
+  accountController.updateUserDetails
+);
 module.exports = router;
