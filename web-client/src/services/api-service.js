@@ -14,7 +14,7 @@ const apiService = {
   setHeader() {
     Vue.axios.defaults.headers.common[
       "Authorization"
-    ] = localStorageService.get("access_token");
+    ] = `Bearer ${localStorageService.get("access_token")}`;
   },
 
   get: (route, body) => {

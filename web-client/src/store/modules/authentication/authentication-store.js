@@ -21,6 +21,7 @@ const authenticationStore = {
       state.isAuthenticated = true;
       localStorageService.save("user", JSON.stringify(user));
       localStorageService.save("access_token", token);
+      apiService.setHeader();
     },
 
     [PURGE_AUTHENTICATION_DETAILS](state) {

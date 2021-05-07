@@ -32,14 +32,31 @@
         </v-card-title>
         <v-card-text>
           <v-row dense>
-            <v-col cols="12" md="6">
-              <v-text-field label="First Name" outlined></v-text-field>
+            <v-col cols="12" v-if="error">
+              <v-alert type="error">
+                {{ errorMessage }}
+              </v-alert>
             </v-col>
             <v-col cols="12" md="6">
-              <v-text-field label="Last Name" outlined></v-text-field>
+              <v-text-field
+                label="First Name"
+                outlined
+                v-model="form.firstName"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-text-field
+                label="Last Name"
+                outlined
+                v-model="form.lastName"
+              ></v-text-field>
             </v-col>
             <v-col cols="12">
-              <v-text-field label="Username" outlined></v-text-field>
+              <v-text-field
+                label="Username"
+                outlined
+                v-model="form.username"
+              ></v-text-field>
             </v-col>
             <v-col cols="12">
               <custom-password-input
@@ -51,7 +68,14 @@
           </v-row>
         </v-card-text>
         <v-card-actions>
-          <v-btn color="primary" block>Submit</v-btn>
+          <v-btn
+            color="primary"
+            block
+            @click="createAccount"
+            :loading="isCreateAccountStart"
+            :disabled="!isFormValid"
+            >Submit</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -60,8 +84,12 @@
 
 <script>
 import CustomPasswordInput from "@/components/custom/PasswordInput";
+import { CREATE_ACCOUNT } from "@/store/modules/account/account-types";
 
 const defaultForm = {
+  firstName: null,
+  lastName: null,
+  username: null,
   password: null,
 };
 
@@ -72,7 +100,11 @@ export default {
     return {
       isFormDialogOpen: false,
       form: Object.assign({}, defaultForm),
+      defaultForm,
       formDialogOperation: null,
+      isCreateAccountStart: false,
+      error: false,
+      errorMessage: null,
     };
   },
 
@@ -82,12 +114,43 @@ export default {
         ? "Create Admin"
         : "Update Admin";
     },
+
+    isFormValid() {
+      const { firstName, lastName, username, password } = this.form;
+      return firstName && lastName && username && password;
+    },
   },
 
   methods: {
     openCreateFormDialog() {
       this.formDialogOperation = "create";
       this.isFormDialogOpen = true;
+    },
+
+    async createAccount() {
+      this.isCreateAccountStart = true;
+      const payload = {
+        firstName: this.form.firstName.trim() || null,
+        lastName: this.form.lastName.trim() || null,
+        type: "admin",
+        username: this.form.username.trim() || null,
+        password: this.form.password || null,
+      };
+      const { success, message } = await this.$store.dispatch(
+        CREATE_ACCOUNT,
+        payload
+      );
+      if (!success) {
+        this.isCreateAccountStart = false;
+        this.error = true;
+        this.errorMessage = message;
+        return;
+      }
+      this.isFormDialogOpen = false;
+      this.form = Object.assign({}, this.defaultForm);
+      this.error = false;
+      this.errorMessage = null;
+      this.isCreateAccountStart = false;
     },
   },
 };
