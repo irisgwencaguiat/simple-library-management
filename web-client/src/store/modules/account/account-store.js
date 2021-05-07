@@ -1,16 +1,15 @@
 import apiService from "@/services/api-service";
 import {
   CREATE_ACCOUNT,
+  DELETE_ACCOUNT,
   GET_ACCOUNTS,
   UPDATE_ACCOUNT,
 } from "@/store/modules/account/account-types";
 
 const accountStore = {
-  mutations: {},
-
   actions: {
     async [CREATE_ACCOUNT](
-      { commit },
+      _,
       { firstName, lastName, type, username, password }
     ) {
       try {
@@ -27,7 +26,7 @@ const accountStore = {
       }
     },
 
-    async [UPDATE_ACCOUNT]({ commit }, { id, firstName, lastName }) {
+    async [UPDATE_ACCOUNT](_, { id, firstName, lastName }) {
       try {
         const response = await apiService.put("/account", {
           id,
@@ -40,11 +39,20 @@ const accountStore = {
       }
     },
 
-    async [GET_ACCOUNTS]({ commit }, filter) {
+    async [GET_ACCOUNTS](_, filter) {
       try {
         const params = new URLSearchParams();
         if (filter) params.append("filter", filter);
         const response = await apiService.get("/account", { params });
+        return response.data;
+      } catch (error) {
+        return error.response.data;
+      }
+    },
+
+    async [DELETE_ACCOUNT](_, id) {
+      try {
+        const response = await apiService.delete(`/account/${id}`);
         return response.data;
       } catch (error) {
         return error.response.data;

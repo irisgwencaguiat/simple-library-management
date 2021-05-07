@@ -129,6 +129,7 @@
 import CustomPasswordInput from "@/components/custom/PasswordInput";
 import {
   CREATE_ACCOUNT,
+  DELETE_ACCOUNT,
   GET_ACCOUNTS,
   UPDATE_ACCOUNT,
 } from "@/store/modules/account/account-types";
@@ -326,7 +327,20 @@ export default {
     },
 
     async deleteAdmin() {
-      console.log(this.selectedAccount);
+      this.isDeleteAdminStart = true;
+      const { success, message } = await this.$store.dispatch(
+        DELETE_ACCOUNT,
+        this.selectedAccount.id
+      );
+      if (success) {
+        await this.getAccounts();
+        this.isDeleteAlertDialogOpen = false;
+        this.$store.commit(SET_NOTIFICATION_SNACKBAR_CONFIGURATION, {
+          text: message,
+          color: "error",
+        });
+      }
+      this.isDeleteAdminStart = false;
     },
   },
 

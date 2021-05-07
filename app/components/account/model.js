@@ -16,6 +16,7 @@ const accountModel = {
   async getDetailsByUsername(username) {
     return await knex("account")
       .where("username", username)
+      .andWhere("is_deleted", false)
       .then(async (result) => result[0] || null);
   },
 
