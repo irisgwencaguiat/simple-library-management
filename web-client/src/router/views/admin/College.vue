@@ -193,11 +193,10 @@ export default {
     tableItems() {
       if (!this.search) return this.colleges;
       return this.colleges.filter((college) => {
-        const { first_name, last_name, username } = college;
+        const { name, short_name } = college;
         const keyword = this.search.toLowerCase().trim();
-        if (first_name.toLowerCase().trim().includes(keyword)) return college;
-        if (last_name.toLowerCase().trim().includes(keyword)) return college;
-        if (username.toLowerCase().trim().includes(keyword)) return college;
+        if (name.toLowerCase().trim().includes(keyword)) return college;
+        if (short_name.toLowerCase().trim().includes(keyword)) return college;
       });
     },
   },
