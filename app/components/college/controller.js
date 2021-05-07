@@ -6,7 +6,7 @@ const collegeController = {
     try {
       const { name, short_name } = request.body;
       const college = await collegeModel.createCollege({ name, short_name });
-      const collegeDetails = await collegeModel.getDetails(college.id);
+      const collegeDetails = await collegeModel.getCollege(college.id);
       response.status(200).json(
         httpResource({
           success: true,
@@ -78,6 +78,32 @@ const collegeController = {
           code: 200,
           message: "Record has been created successfully.",
           data: null,
+        })
+      );
+    } catch (error) {
+      response.status(400).json(
+        httpResource({
+          success: false,
+          code: 400,
+          message: error,
+        })
+      );
+    }
+  },
+  async updateCollegeDetails(request, response) {
+    try {
+      const { id, name, short_name } = request.body;
+      const payload = {};
+      if (name) payload.name = name;
+      if (short_name) payload.short_name = short_name;
+      const updatedCollege = await collegeModel.updateCollege(id, payload);
+      const collegeDetails = await collegeModel.getCollege(updatedCollege.id);
+      response.status(200).json(
+        httpResource({
+          success: true,
+          code: 200,
+          message: "Record has been created successfully.",
+          data: collegeDetails,
         })
       );
     } catch (error) {

@@ -25,4 +25,10 @@ router.delete(
   middleware.authentication.passportAuthenticate,
   collegeController.deleteCollege
 );
+
+router.put(
+  "/",
+  middleware.authentication.passportAuthenticate,
+  collegeController.updateCollegeDetails
+);
 module.exports = router;

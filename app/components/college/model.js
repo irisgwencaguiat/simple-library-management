@@ -7,11 +7,6 @@ const collegeModel = {
       .returning(["id"])
       .then((result) => result[0]);
   },
-  async getDetails(id) {
-    return await knex("college")
-      .where("id", id)
-      .then((result) => result[0] || null);
-  },
   async getColleges() {
     return await knex("college")
       .where("is_deleted", false)
@@ -26,6 +21,14 @@ const collegeModel = {
   },
   async deleteCollege(id) {
     await knex("college").where("id", id).update("is_deleted", true);
+  },
+  async updateCollege(id, input) {
+    return await knex("college")
+      .where("id", id)
+      .andWhere("is_deleted", false)
+      .update({ ...input })
+      .returning(["id"])
+      .then((result) => result[0] || null);
   },
 };
 
