@@ -15,4 +15,9 @@ router.get(
   accountController.getAccounts
 );
 
+router.get(
+  "/:id",
+  middleware.authentication.passportAuthenticate,
+  accountController.getAccountById
+);
 module.exports = router;

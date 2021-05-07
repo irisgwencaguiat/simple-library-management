@@ -29,7 +29,14 @@ const accountModel = {
   async getAccounts() {
     return await knex("account")
       .where("is_deleted", false)
-      .then((result) => result);
+      .then((result) => result || []);
+  },
+
+  async getAccountById(id) {
+    return await knex("account")
+      .where("is_deleted", false)
+      .andWhere("id", id)
+      .then((result) => result[0] || null);
   },
 };
 
