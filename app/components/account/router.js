@@ -20,4 +20,10 @@ router.get(
   middleware.authentication.passportAuthenticate,
   accountController.getAccountById
 );
+
+router.delete(
+  "/:id",
+  middleware.authentication.passportAuthenticate,
+  accountController.deleteAccount
+);
 module.exports = router;

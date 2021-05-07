@@ -38,6 +38,10 @@ const accountModel = {
       .andWhere("id", id)
       .then((result) => result[0] || null);
   },
+
+  async deleteAccount(id) {
+    await knex("account").where("id", id).update("is_deleted", true);
+  },
 };
 
 module.exports = accountModel;
