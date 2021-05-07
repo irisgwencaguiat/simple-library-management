@@ -6,7 +6,7 @@
       <v-btn
         color="primary"
         class="text-capitalize"
-        @click="isFormDialogOpen = true"
+        @click="openCreateFormDialog"
         >Create <v-icon>mdi-plus</v-icon></v-btn
       >
     </v-card-title>
@@ -24,7 +24,7 @@
     <v-dialog v-model="isFormDialogOpen" width="500" persistent>
       <v-card>
         <v-card-title>
-          <span>Admin Form</span>
+          <span>{{ formDialogTitle }}</span>
           <v-spacer> </v-spacer>
           <v-btn icon @click="isFormDialogOpen = false">
             <v-icon>mdi-close</v-icon>
@@ -72,7 +72,23 @@ export default {
     return {
       isFormDialogOpen: false,
       form: Object.assign({}, defaultForm),
+      formDialogOperation: null,
     };
+  },
+
+  computed: {
+    formDialogTitle() {
+      return this.formDialogOperation && this.formDialogOperation === "create"
+        ? "Create Admin"
+        : "Update Admin";
+    },
+  },
+
+  methods: {
+    openCreateFormDialog() {
+      this.formDialogOperation = "create";
+      this.isFormDialogOpen = true;
+    },
   },
 };
 </script>
