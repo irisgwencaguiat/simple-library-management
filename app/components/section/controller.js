@@ -126,36 +126,38 @@ const sectionController = {
       );
     }
   },
-  // async updateCourseDetails(request, response) {
-  //   try {
-  //     const { id, name, short_name, college_id } = request.body;
-  //     const payload = {};
-  //     if (name) payload.name = name;
-  //     if (short_name) payload.short_name = short_name;
-  //     if (college_id) payload.college_id = college_id;
-  //     const updatedCourse = await courseModel.updateCourse(id, payload);
-  //     const course = await courseModel.getCourse(updatedCourse.id);
-  //     const college = await collegeModel.getCollege(course.college_id);
-  //     course.college = Object.assign({}, college);
-  //     delete course.college_id;
-  //     response.status(200).json(
-  //       httpResource({
-  //         success: true,
-  //         code: 200,
-  //         message: "Record has been created successfully.",
-  //         data: course,
-  //       })
-  //     );
-  //   } catch (error) {
-  //     response.status(400).json(
-  //       httpResource({
-  //         success: false,
-  //         code: 400,
-  //         message: error,
-  //       })
-  //     );
-  //   }
-  // },
+  async updateSectionDetails(request, response) {
+    try {
+      const { id, name, course_id } = request.body;
+      const payload = {};
+      if (name) payload.name = name;
+      if (course_id) payload.course_id = course_id;
+      const updatedSection = await sectionModel.updateSection(id, payload);
+      const section = await sectionModel.getSection(updatedSection.id);
+      const course = await courseModel.getCourse(section.course_id);
+      const college = await collegeModel.getCollege(course.college_id);
+      section.course = Object.assign({}, course);
+      section.course.college = Object.assign({}, college);
+      delete section.course_id;
+      delete section.course.college_id;
+      response.status(200).json(
+        httpResource({
+          success: true,
+          code: 200,
+          message: "Record has been created successfully.",
+          data: section,
+        })
+      );
+    } catch (error) {
+      response.status(400).json(
+        httpResource({
+          success: false,
+          code: 400,
+          message: error,
+        })
+      );
+    }
+  },
 };
 
 module.exports = sectionController;

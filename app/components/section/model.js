@@ -22,14 +22,14 @@ const sectionModel = {
   async deleteSection(id) {
     await knex("section").where("id", id).update("is_deleted", true);
   },
-  // async updateCourse(id, input) {
-  //   return await knex("course")
-  //     .where("id", id)
-  //     .andWhere("is_deleted", false)
-  //     .update({ ...input })
-  //     .returning(["id"])
-  //     .then((result) => result[0] || null);
-  // },
+  async updateSection(id, input) {
+    return await knex("section")
+      .where("id", id)
+      .andWhere("is_deleted", false)
+      .update({ ...input })
+      .returning(["id"])
+      .then((result) => result[0] || null);
+  },
 };
 
 module.exports = sectionModel;
