@@ -13,6 +13,12 @@ const courseModel = {
       .andWhere("id", id)
       .then((result) => result[0] || null);
   },
+  async getCourses() {
+    return await knex("course")
+      .where("is_deleted", false)
+      .orderBy("created_at", "desc")
+      .then((result) => result || []);
+  },
 };
 
 module.exports = courseModel;

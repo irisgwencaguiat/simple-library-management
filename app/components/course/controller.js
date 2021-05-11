@@ -61,6 +61,41 @@ const courseController = {
       );
     }
   },
+  async getCourses(request, response) {
+    try {
+      const courses = await courseModel.getCourses();
+      let coursesDetails = [];
+      if (courses.length > 0) {
+        coursesDetails = await Promise.all(
+          courses.map(async (data) => {
+            const course = data;
+
+            const college = await collegeModel.getCollege(course.college_id);
+            course.college = Object.assign({}, college);
+            delete course.college_id;
+            return course;
+          })
+        );
+      }
+
+      response.status(200).json(
+        httpResource({
+          success: true,
+          code: 200,
+          message: "Record has been created successfully.",
+          data: coursesDetails,
+        })
+      );
+    } catch (error) {
+      response.status(400).json(
+        httpResource({
+          success: false,
+          code: 400,
+          message: error,
+        })
+      );
+    }
+  },
 };
 
 module.exports = courseController;

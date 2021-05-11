@@ -10,6 +10,11 @@ router.post(
 );
 
 router.get(
+  "/",
+  middleware.authentication.passportAuthenticate,
+  courseController.getCourses
+);
+router.get(
   "/:id",
   middleware.authentication.passportAuthenticate,
   courseController.getCourse
