@@ -20,4 +20,9 @@ router.get(
   courseController.getCourse
 );
 
+router.delete(
+  "/:id",
+  middleware.authentication.passportAuthenticate,
+  courseController.deleteCourse
+);
 module.exports = router;

@@ -19,6 +19,9 @@ const courseModel = {
       .orderBy("created_at", "desc")
       .then((result) => result || []);
   },
+  async deleteCourse(id) {
+    await knex("course").where("id", id).update("is_deleted", true);
+  },
 };
 
 module.exports = courseModel;
