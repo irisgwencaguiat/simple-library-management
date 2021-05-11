@@ -8,12 +8,12 @@ router.post(
   middleware.authentication.passportAuthenticate,
   sectionController.createSection
 );
-//
-// router.get(
-//   "/",
-//   middleware.authentication.passportAuthenticate,
-//   courseController.getCourses
-// );
+
+router.get(
+  "/",
+  middleware.authentication.passportAuthenticate,
+  sectionController.getSections
+);
 router.get(
   "/:id",
   middleware.authentication.passportAuthenticate,

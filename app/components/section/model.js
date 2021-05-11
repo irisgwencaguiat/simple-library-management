@@ -13,12 +13,12 @@ const sectionModel = {
       .andWhere("id", id)
       .then((result) => result[0] || null);
   },
-  // async getCourses() {
-  //   return await knex("course")
-  //     .where("is_deleted", false)
-  //     .orderBy("created_at", "desc")
-  //     .then((result) => result || []);
-  // },
+  async getSections() {
+    return await knex("section")
+      .where("is_deleted", false)
+      .orderBy("created_at", "desc")
+      .then((result) => result || []);
+  },
   // async deleteCourse(id) {
   //   await knex("course").where("id", id).update("is_deleted", true);
   // },

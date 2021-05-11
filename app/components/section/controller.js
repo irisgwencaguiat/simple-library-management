@@ -67,41 +67,43 @@ const sectionController = {
       );
     }
   },
-  // async getCourses(request, response) {
-  //   try {
-  //     const courses = await courseModel.getCourses();
-  //     let coursesDetails = [];
-  //     if (courses.length > 0) {
-  //       coursesDetails = await Promise.all(
-  //         courses.map(async (data) => {
-  //           const course = data;
-  //
-  //           const college = await collegeModel.getCollege(course.college_id);
-  //           course.college = Object.assign({}, college);
-  //           delete course.college_id;
-  //           return course;
-  //         })
-  //       );
-  //     }
-  //
-  //     response.status(200).json(
-  //       httpResource({
-  //         success: true,
-  //         code: 200,
-  //         message: "Record has been created successfully.",
-  //         data: coursesDetails,
-  //       })
-  //     );
-  //   } catch (error) {
-  //     response.status(400).json(
-  //       httpResource({
-  //         success: false,
-  //         code: 400,
-  //         message: error,
-  //       })
-  //     );
-  //   }
-  // },
+  async getSections(request, response) {
+    try {
+      const sections = await sectionModel.getSections();
+      let sectionsDetails = [];
+      if (sections.length > 0) {
+        sectionsDetails = await Promise.all(
+          sections.map(async (data) => {
+            const section = data;
+            const course = await courseModel.getCourse(section.course_id);
+            const college = await collegeModel.getCollege(course.college_id);
+            section.course = Object.assign({}, course);
+            section.course.college = Object.assign({}, college);
+            delete section.course_id;
+            delete section.course.college_id;
+            return section;
+          })
+        );
+      }
+
+      response.status(200).json(
+        httpResource({
+          success: true,
+          code: 200,
+          message: "Record has been created successfully.",
+          data: sectionsDetails,
+        })
+      );
+    } catch (error) {
+      response.status(400).json(
+        httpResource({
+          success: false,
+          code: 400,
+          message: error,
+        })
+      );
+    }
+  },
   // async deleteCourse(request, response) {
   //   try {
   //     const id = parseInt(request.params.id);
