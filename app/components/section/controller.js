@@ -36,34 +36,37 @@ const sectionController = {
       );
     }
   },
-  // async getCourse(request, response) {
-  //   try {
-  //     const id = parseInt(request.params.id);
-  //     const courseDetails = await courseModel.getCourse(id);
-  //     if (courseDetails) {
-  //       const college = await collegeModel.getCollege(courseDetails.college_id);
-  //       courseDetails.college = Object.assign({}, college);
-  //       delete courseDetails.college_id;
-  //     }
-  //
-  //     response.status(200).json(
-  //       httpResource({
-  //         success: true,
-  //         code: 200,
-  //         message: "Record has been created successfully.",
-  //         data: courseDetails,
-  //       })
-  //     );
-  //   } catch (error) {
-  //     response.status(400).json(
-  //       httpResource({
-  //         success: false,
-  //         code: 400,
-  //         message: error,
-  //       })
-  //     );
-  //   }
-  // },
+  async getSection(request, response) {
+    try {
+      const id = parseInt(request.params.id);
+      const sectionDetails = await sectionModel.getSection(id);
+      if (sectionDetails) {
+        const course = await courseModel.getCourse(sectionDetails.course_id);
+        const college = await collegeModel.getCollege(course.college_id);
+        sectionDetails.course = Object.assign({}, course);
+        sectionDetails.course.college = Object.assign({}, college);
+        delete sectionDetails.course_id;
+        delete sectionDetails.course.college_id;
+      }
+
+      response.status(200).json(
+        httpResource({
+          success: true,
+          code: 200,
+          message: "Record has been created successfully.",
+          data: sectionDetails,
+        })
+      );
+    } catch (error) {
+      response.status(400).json(
+        httpResource({
+          success: false,
+          code: 400,
+          message: error,
+        })
+      );
+    }
+  },
   // async getCourses(request, response) {
   //   try {
   //     const courses = await courseModel.getCourses();
