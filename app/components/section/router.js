@@ -20,12 +20,12 @@ router.get(
   sectionController.getSection
 );
 
-// router.delete(
-//   "/:id",
-//   middleware.authentication.passportAuthenticate,
-//   courseController.deleteCourse
-// );
-//
+router.delete(
+  "/:id",
+  middleware.authentication.passportAuthenticate,
+  sectionController.deleteSection
+);
+
 // router.put(
 //   "/",
 //   middleware.authentication.passportAuthenticate,

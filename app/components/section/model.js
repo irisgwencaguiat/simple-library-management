@@ -19,9 +19,9 @@ const sectionModel = {
       .orderBy("created_at", "desc")
       .then((result) => result || []);
   },
-  // async deleteCourse(id) {
-  //   await knex("course").where("id", id).update("is_deleted", true);
-  // },
+  async deleteSection(id) {
+    await knex("section").where("id", id).update("is_deleted", true);
+  },
   // async updateCourse(id, input) {
   //   return await knex("course")
   //     .where("id", id)
