@@ -9,4 +9,10 @@ router.post(
   courseController.createCourse
 );
 
+router.get(
+  "/:id",
+  middleware.authentication.passportAuthenticate,
+  courseController.getCourse
+);
+
 module.exports = router;
