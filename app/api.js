@@ -4,9 +4,11 @@ const authenticationRouter = require("./components/authentication/router");
 const accountRouter = require("./components/account/router");
 const collegeRouter = require("./components/college/router");
 const courseRouter = require("./components/course/router");
+const sectionRouter = require("./components/section/router");
 
 api.use("/authentication", authenticationRouter);
 api.use("/account", accountRouter);
 api.use("/college", collegeRouter);
 api.use("/course", courseRouter);
+api.use("/section", sectionRouter);
 module.exports = api;
