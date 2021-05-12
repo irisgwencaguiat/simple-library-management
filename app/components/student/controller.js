@@ -69,41 +69,46 @@ const studentController = {
       );
     }
   },
-  // async getAccounts(request, response) {
-  //   try {
-  //     const filter = request.query.filter || null;
-  //     let accounts = [];
-  //     if (filter) {
-  //       accounts = await accountModel.filteredAccounts(filter);
-  //     }
-  //     if (!filter) {
-  //       accounts = await accountModel.getAccounts();
-  //     }
-  //     const accountsDetails = await Promise.all(
-  //       accounts.map((data) => {
-  //         const account = data;
-  //         delete account.password;
-  //         return account;
-  //       })
-  //     );
-  //     response.status(200).json(
-  //       httpResource({
-  //         success: true,
-  //         code: 200,
-  //         message: "Record has been created successfully.",
-  //         data: accountsDetails,
-  //       })
-  //     );
-  //   } catch (error) {
-  //     response.status(400).json(
-  //       httpResource({
-  //         success: false,
-  //         code: 400,
-  //         message: error,
-  //       })
-  //     );
-  //   }
-  // },
+  async getStudents(request, response) {
+    try {
+      const students = await studentModel.getStudents();
+      const studentsDetails = await Promise.all(
+        students.map(async (data) => {
+          const details = data;
+          const account = await accountModel.getDetails(details.account_id);
+          const college = await collegeModel.getCollege(details.college_id);
+          const course = await courseModel.getCourse(details.course_id);
+          const section = await sectionModel.getSection(details.section_id);
+          details.account = Object.assign({}, account);
+          details.college = Object.assign({}, college);
+          details.course = Object.assign({}, course);
+          details.section = Object.assign({}, section);
+          delete details.account_id;
+          delete details.college_id;
+          delete details.course_id;
+          delete details.section_id;
+          delete details.account.password;
+          return details;
+        })
+      );
+      response.status(200).json(
+        httpResource({
+          success: true,
+          code: 200,
+          message: "Record has been created successfully.",
+          data: studentsDetails,
+        })
+      );
+    } catch (error) {
+      response.status(400).json(
+        httpResource({
+          success: false,
+          code: 400,
+          message: error,
+        })
+      );
+    }
+  },
   async getStudent(request, response) {
     try {
       const id = parseInt(request.params.id);

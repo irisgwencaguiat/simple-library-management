@@ -9,12 +9,12 @@ router.post(
   studentController.createStudent
 );
 
-// router.get(
-//   "/",
-//   middleware.authentication.passportAuthenticate,
-//   accountController.getAccounts
-// );
-//
+router.get(
+  "/",
+  middleware.authentication.passportAuthenticate,
+  studentController.getStudents
+);
+
 router.get(
   "/:id",
   middleware.authentication.passportAuthenticate,

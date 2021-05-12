@@ -14,27 +14,13 @@ const studentModel = {
       .then((result) => result[0]);
   },
 
-  // async getDetailsByUsername(username) {
-  //   return await knex("account")
-  //     .where("username", username)
-  //     .andWhere("is_deleted", false)
-  //     .then(async (result) => result[0] || null);
-  // },
-  //
-  // async getPassword(id) {
-  //   return await knex("account")
-  //     .select(["password"])
-  //     .where("id", id)
-  //     .then((result) => result[0].password || null);
-  // },
-  //
-  // async getAccounts() {
-  //   return await knex("account")
-  //     .where("is_deleted", false)
-  //     .orderBy("created_at", "desc")
-  //     .then((result) => result || []);
-  // },
-  //
+  async getStudents() {
+    return await knex("student")
+      .where("is_deleted", false)
+      .orderBy("created_at", "desc")
+      .then((result) => result || []);
+  },
+
   // async filteredAccounts(filter) {
   //   return await knex("account")
   //     .where("is_deleted", false)
