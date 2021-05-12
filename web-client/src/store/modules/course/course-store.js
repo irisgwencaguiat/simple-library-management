@@ -21,12 +21,13 @@ const courseStore = {
       }
     },
 
-    async [UPDATE_COURSE](_, { id, name, shortName }) {
+    async [UPDATE_COURSE](_, { id, name, shortName, collegeId }) {
       try {
         const response = await apiService.put("/course", {
           id,
           name,
           short_name: shortName,
+          college_id: collegeId,
         });
         return response.data;
       } catch (error) {
