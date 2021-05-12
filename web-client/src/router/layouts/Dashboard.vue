@@ -101,6 +101,11 @@ export default {
             to: { name: "dashboard-admin-course-view" },
             icon: "mdi-book",
           },
+          {
+            text: "Section",
+            to: { name: "dashboard-admin-section-view" },
+            icon: "mdi-google-classroom",
+          },
         ],
       };
       return navigations[this.user.account_type];

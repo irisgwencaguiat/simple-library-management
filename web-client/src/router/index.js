@@ -39,6 +39,12 @@ const routes = [
         name: "dashboard-admin-course-view",
         component: () => import("@/router/views/admin/Course"),
       },
+
+      {
+        path: "section",
+        name: "dashboard-admin-section-view",
+        component: () => import("@/router/views/admin/Section"),
+      },
     ],
     meta: {
       requiresAuth: true,
