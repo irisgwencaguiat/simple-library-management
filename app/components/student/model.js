@@ -21,25 +21,10 @@ const studentModel = {
       .then((result) => result || []);
   },
 
-  // async filteredAccounts(filter) {
-  //   return await knex("account")
-  //     .where("is_deleted", false)
-  //     .andWhere("account_type", filter)
-  //     .orderBy("created_at", "desc")
-  //     .then((result) => result || []);
-  // },
-  //
-  // async getAccountById(id) {
-  //   return await knex("account")
-  //     .where("is_deleted", false)
-  //     .andWhere("id", id)
-  //     .then((result) => result[0] || null);
-  // },
-  //
-  // async deleteAccount(id) {
-  //   await knex("account").where("id", id).update("is_deleted", true);
-  // },
-  //
+  async deleteStudent(id) {
+    await knex("student").where("id", id).update("is_deleted", true);
+  },
+
   // async updateAccount(id, input) {
   //   return await knex("account")
   //     .where("id", id)

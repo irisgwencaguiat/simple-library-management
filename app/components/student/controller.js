@@ -144,28 +144,30 @@ const studentController = {
       );
     }
   },
-  // async deleteAccount(request, response) {
-  //   try {
-  //     const id = parseInt(request.params.id);
-  //     await accountModel.deleteAccount(id);
-  //     response.status(200).json(
-  //       httpResource({
-  //         success: true,
-  //         code: 200,
-  //         message: "Record has been created successfully.",
-  //         data: null,
-  //       })
-  //     );
-  //   } catch (error) {
-  //     response.status(400).json(
-  //       httpResource({
-  //         success: false,
-  //         code: 400,
-  //         message: error,
-  //       })
-  //     );
-  //   }
-  // },
+  async deleteStudent(request, response) {
+    try {
+      const id = parseInt(request.params.id);
+      const studentDetails = await studentModel.getStudent(id);
+      await accountModel.deleteAccount(studentDetails.account_id);
+      await studentModel.deleteStudent(id);
+      response.status(200).json(
+        httpResource({
+          success: true,
+          code: 200,
+          message: "Record has been created successfully.",
+          data: null,
+        })
+      );
+    } catch (error) {
+      response.status(400).json(
+        httpResource({
+          success: false,
+          code: 400,
+          message: error,
+        })
+      );
+    }
+  },
   // async updateUserDetails(request, response) {
   //   try {
   //     const { id, first_name, last_name } = request.body;

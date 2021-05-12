@@ -21,12 +21,12 @@ router.get(
   studentController.getStudent
 );
 
-// router.delete(
-//   "/:id",
-//   middleware.authentication.passportAuthenticate,
-//   accountController.deleteAccount
-// );
-//
+router.delete(
+  "/:id",
+  middleware.authentication.passportAuthenticate,
+  studentController.deleteStudent
+);
+
 // router.put(
 //   "/",
 //   middleware.authentication.passportAuthenticate,
