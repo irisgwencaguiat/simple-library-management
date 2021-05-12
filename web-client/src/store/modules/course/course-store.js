@@ -8,11 +8,12 @@ import {
 
 const courseStore = {
   actions: {
-    async [CREATE_COURSE](_, { name, shortName }) {
+    async [CREATE_COURSE](_, { name, shortName, collegeId }) {
       try {
         const response = await apiService.post("/course", {
           name,
           short_name: shortName,
+          college_id: collegeId,
         });
         return response.data;
       } catch (error) {

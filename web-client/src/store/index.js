@@ -4,6 +4,7 @@ import authenticationStore from "@/store/modules/authentication/authentication-s
 import accountStore from "@/store/modules/account/account-store";
 import configurationStore from "@/store/modules/configuration/configuration-store";
 import collegeStore from "@/store/modules/college/college-store";
+import courseStore from "@/store/modules/course/course-store";
 
 Vue.use(Vuex);
 
@@ -13,5 +14,6 @@ export default new Vuex.Store({
     account: accountStore,
     configuration: configurationStore,
     college: collegeStore,
+    course: courseStore,
   },
 });

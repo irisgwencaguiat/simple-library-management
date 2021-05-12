@@ -248,6 +248,7 @@ export default {
       const payload = {
         name: this.form.name.trim() || null,
         shortName: this.form.shortName.trim() || null,
+        collegeId: this.form.collegeId || null,
       };
       const { success, message } = await this.$store.dispatch(
         CREATE_COURSE,
@@ -259,7 +260,7 @@ export default {
         this.errorMessage = message;
         return;
       }
-      await this.getCourses();
+      // await this.getCourses();
       this.isFormDialogOpen = false;
       this.$store.commit(SET_NOTIFICATION_SNACKBAR_CONFIGURATION, {
         text: message,
