@@ -27,9 +27,9 @@ router.delete(
   studentController.deleteStudent
 );
 
-// router.put(
-//   "/",
-//   middleware.authentication.passportAuthenticate,
-//   accountController.updateUserDetails
-// );
+router.put(
+  "/",
+  middleware.authentication.passportAuthenticate,
+  studentController.updateStudentDetails
+);
 module.exports = router;
