@@ -33,6 +33,12 @@ const routes = [
         name: "dashboard-admin-college-view",
         component: () => import("@/router/views/admin/College"),
       },
+
+      {
+        path: "course",
+        name: "dashboard-admin-course-view",
+        component: () => import("@/router/views/admin/Course"),
+      },
     ],
     meta: {
       requiresAuth: true,

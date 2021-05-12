@@ -1,7 +1,7 @@
 <template>
   <v-card outlined>
     <v-card-title>
-      <span class="font-weight-bold"> College Management </span>
+      <span class="font-weight-bold"> Course Management </span>
       <v-spacer></v-spacer>
       <v-btn
         color="primary"
@@ -11,7 +11,7 @@
       >
     </v-card-title>
     <v-data-table
-      :loading="isGetCollegesStart"
+      :loading="isGetCoursesStart"
       :items="tableItems"
       :headers="tableHeaders"
     >
@@ -68,14 +68,24 @@
                 v-model="form.shortName"
               ></v-text-field>
             </v-col>
+            <v-col cols="12">
+              <v-autocomplete
+                :items="colleges"
+                label="College"
+                outlined
+                item-text="name"
+                item-value="id"
+                v-model="form.collegeId"
+              ></v-autocomplete>
+            </v-col>
           </v-row>
         </v-card-text>
         <v-card-actions>
           <v-btn
             color="primary"
             block
-            @click="createCollege"
-            :loading="isCreateCollegeStart"
+            @click="createCourse"
+            :loading="isCreateCourseStart"
             :disabled="!isFormValid"
             v-if="isFormDialogCreateOperation"
             >Create</v-btn
@@ -83,8 +93,8 @@
           <v-btn
             color="primary"
             block
-            @click="updateCollege"
-            :loading="isUpdateCollegeStart"
+            @click="updateCourse"
+            :loading="isUpdateCourseStart"
             :disabled="!isFormValid"
             v-if="isFormDialogUpdateOperation"
             >Update</v-btn
@@ -94,11 +104,11 @@
     </v-dialog>
     <custom-alert-dialog
       :is-open.sync="isDeleteAlertDialogOpen"
-      title="Delete College"
+      title="Delete Course"
       type="error"
       text="This actions is irreversible, click confirm if you are sure."
-      :loading="isDeleteCollegeStart"
-      :action="deleteCollege"
+      :loading="isDeleteCourseStart"
+      :action="deleteCourse"
     ></custom-alert-dialog>
   </v-card>
 </template>
@@ -106,18 +116,20 @@
 <script>
 import CustomPasswordInput from "@/components/custom/PasswordInput";
 import {
-  CREATE_COLLEGE,
-  DELETE_COLLEGE,
-  GET_COLLEGES,
-  UPDATE_COLLEGE,
-} from "@/store/modules/college/college-types";
+  CREATE_COURSE,
+  DELETE_COURSE,
+  GET_COURSES,
+  UPDATE_COURSE,
+} from "@/store/modules/course/course-types";
 import dateMixin from "@/mixins/date-mixin";
 import { SET_NOTIFICATION_SNACKBAR_CONFIGURATION } from "@/store/modules/configuration/configuration-types";
 import CustomAlertDialog from "@/components/custom/AlertDialog";
+import { GET_COLLEGES } from "@/store/modules/college/college-types";
 
 const defaultForm = {
   name: null,
   shortName: null,
+  collegeId: null,
 };
 
 export default {
@@ -131,24 +143,26 @@ export default {
       form: Object.assign({}, defaultForm),
       defaultForm,
       formDialogOperation: null,
-      isCreateCollegeStart: false,
-      isUpdateCollegeStart: false,
+      isCreateCourseStart: false,
+      isUpdateCourseStart: false,
       error: false,
       errorMessage: null,
+      isGetCoursesStart: false,
+      courses: [],
+      search: null,
+      selectedCourse: null,
+      isDeleteAlertDialogOpen: false,
+      isDeleteCourseStart: false,
       isGetCollegesStart: false,
       colleges: [],
-      search: null,
-      selectedCollege: null,
-      isDeleteAlertDialogOpen: false,
-      isDeleteCollegeStart: false,
     };
   },
 
   computed: {
     formDialogTitle() {
       return this.formDialogOperation && this.formDialogOperation === "create"
-        ? "Create College"
-        : "Update College";
+        ? "Create Course"
+        : "Update Course";
     },
 
     isFormValid() {
@@ -191,12 +205,12 @@ export default {
     },
 
     tableItems() {
-      if (!this.search) return this.colleges;
-      return this.colleges.filter((college) => {
-        const { name, short_name } = college;
+      if (!this.search) return this.courses;
+      return this.courses.filter((course) => {
+        const { name, short_name } = course;
         const keyword = this.search.toLowerCase().trim();
-        if (name.toLowerCase().trim().includes(keyword)) return college;
-        if (short_name.toLowerCase().trim().includes(keyword)) return college;
+        if (name.toLowerCase().trim().includes(keyword)) return course;
+        if (short_name.toLowerCase().trim().includes(keyword)) return course;
       });
     },
   },
@@ -207,10 +221,10 @@ export default {
       this.isFormDialogOpen = true;
     },
 
-    openUpdateFormDialog(college) {
+    openUpdateFormDialog(course) {
       this.formDialogOperation = "update";
-      this.selectedCollege = Object.assign({}, college);
-      const { name, short_name } = college;
+      this.selectedCourse = Object.assign({}, course);
+      const { name, short_name } = course;
       this.form = Object.assign(this.form, {
         name,
         shortName: short_name,
@@ -224,28 +238,28 @@ export default {
       this.isFormDialogOpen = false;
     },
 
-    openDeleteAlertDialog(college) {
-      this.selectedCollege = Object.assign({}, college);
+    openDeleteAlertDialog(course) {
+      this.selectedCourse = Object.assign({}, course);
       this.isDeleteAlertDialogOpen = true;
     },
 
-    async createCollege() {
-      this.isCreateCollegeStart = true;
+    async createCourse() {
+      this.isCreateCourseStart = true;
       const payload = {
         name: this.form.name.trim() || null,
         shortName: this.form.shortName.trim() || null,
       };
       const { success, message } = await this.$store.dispatch(
-        CREATE_COLLEGE,
+        CREATE_COURSE,
         payload
       );
       if (!success) {
-        this.isCreateCollegeStart = false;
+        this.isCreateCourseStart = false;
         this.error = true;
         this.errorMessage = message;
         return;
       }
-      await this.getColleges();
+      await this.getCourses();
       this.isFormDialogOpen = false;
       this.$store.commit(SET_NOTIFICATION_SNACKBAR_CONFIGURATION, {
         text: message,
@@ -254,27 +268,27 @@ export default {
       this.form = Object.assign({}, this.defaultForm);
       this.error = false;
       this.errorMessage = null;
-      this.isCreateCollegeStart = false;
+      this.isCreateCourseStart = false;
     },
 
-    async updateCollege() {
-      this.isUpdateCollegeStart = true;
+    async updateCourse() {
+      this.isUpdateCourseStart = true;
       const payload = {
-        id: this.selectedCollege.id,
+        id: this.selectedCourse.id,
         name: this.form.name.trim() || null,
         shortName: this.form.shortName.trim() || null,
       };
       const { success, message } = await this.$store.dispatch(
-        UPDATE_COLLEGE,
+        UPDATE_COURSE,
         payload
       );
       if (!success) {
-        this.isUpdateCollegeStart = false;
+        this.isUpdateCourseStart = false;
         this.error = true;
         this.errorMessage = message;
         return;
       }
-      await this.getColleges();
+      await this.getCourses();
       this.isFormDialogOpen = false;
       this.$store.commit(SET_NOTIFICATION_SNACKBAR_CONFIGURATION, {
         text: message,
@@ -283,7 +297,14 @@ export default {
       this.form = Object.assign({}, this.defaultForm);
       this.error = false;
       this.errorMessage = null;
-      this.isUpdateCollegeStart = false;
+      this.isUpdateCourseStart = false;
+    },
+
+    async getCourses() {
+      this.isGetCoursesStart = true;
+      const { data } = await this.$store.dispatch(GET_COURSES);
+      this.courses = data;
+      this.isGetCoursesStart = false;
     },
 
     async getColleges() {
@@ -293,25 +314,26 @@ export default {
       this.isGetCollegesStart = false;
     },
 
-    async deleteCollege() {
-      this.isDeleteCollegeStart = true;
+    async deleteCourse() {
+      this.isDeleteCourseStart = true;
       const { success, message } = await this.$store.dispatch(
-        DELETE_COLLEGE,
-        this.selectedCollege.id
+        DELETE_COURSE,
+        this.selectedCourse.id
       );
       if (success) {
-        await this.getColleges();
+        await this.getCourses();
         this.isDeleteAlertDialogOpen = false;
         this.$store.commit(SET_NOTIFICATION_SNACKBAR_CONFIGURATION, {
           text: message,
           color: "error",
         });
       }
-      this.isDeleteCollegeStart = false;
+      this.isDeleteCourseStart = false;
     },
   },
 
   async created() {
+    // await this.getCourses();
     await this.getColleges();
   },
 };
