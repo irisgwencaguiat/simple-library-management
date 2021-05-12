@@ -26,6 +26,9 @@
           ></v-text-field>
         </v-card-text>
       </template>
+      <template v-slot:item.college="{ item }">
+        <span class="text-capitalize">{{ item.college.name }}</span>
+      </template>
       <template v-slot:item.created_at="{ item }">
         {{ formatCreatedAt(item.created_at) }}
       </template>
@@ -183,6 +186,11 @@ export default {
           sortable: false,
         },
         {
+          text: "College",
+          value: "college",
+          sortable: false,
+        },
+        {
           text: "Created At",
           value: "created_at",
           sortable: false,
@@ -207,10 +215,11 @@ export default {
     tableItems() {
       if (!this.search) return this.courses;
       return this.courses.filter((course) => {
-        const { name, short_name } = course;
+        const { name, short_name, college } = course;
         const keyword = this.search.toLowerCase().trim();
         if (name.toLowerCase().trim().includes(keyword)) return course;
         if (short_name.toLowerCase().trim().includes(keyword)) return course;
+        if (college.name.toLowerCase().trim().includes(keyword)) return course;
       });
     },
   },
@@ -260,7 +269,7 @@ export default {
         this.errorMessage = message;
         return;
       }
-      // await this.getCourses();
+      await this.getCourses();
       this.isFormDialogOpen = false;
       this.$store.commit(SET_NOTIFICATION_SNACKBAR_CONFIGURATION, {
         text: message,
@@ -334,7 +343,7 @@ export default {
   },
 
   async created() {
-    // await this.getCourses();
+    await this.getCourses();
     await this.getColleges();
   },
 };
