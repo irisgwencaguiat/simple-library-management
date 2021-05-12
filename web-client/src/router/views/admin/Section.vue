@@ -271,8 +271,7 @@ export default {
       const payload = {
         id: this.selectedSection.id,
         name: this.form.name.trim() || null,
-        shortName: this.form.shortName.trim() || null,
-        collegeId: this.form.collegeId || null,
+        courseId: this.form.courseId || null,
       };
       const { success, message } = await this.$store.dispatch(
         UPDATE_SECTION,
