@@ -104,29 +104,41 @@ const studentController = {
   //     );
   //   }
   // },
-  // async getAccountById(request, response) {
-  //   try {
-  //     const id = parseInt(request.params.id);
-  //     const account = await accountModel.getAccountById(id);
-  //     if (account) delete account.password;
-  //     response.status(200).json(
-  //       httpResource({
-  //         success: true,
-  //         code: 200,
-  //         message: "Record has been created successfully.",
-  //         data: account,
-  //       })
-  //     );
-  //   } catch (error) {
-  //     response.status(400).json(
-  //       httpResource({
-  //         success: false,
-  //         code: 400,
-  //         message: error,
-  //       })
-  //     );
-  //   }
-  // },
+  async getStudent(request, response) {
+    try {
+      const id = parseInt(request.params.id);
+      const details = await studentModel.getStudent(id);
+      const account = await accountModel.getDetails(details.account_id);
+      const college = await collegeModel.getCollege(details.college_id);
+      const course = await courseModel.getCourse(details.course_id);
+      const section = await sectionModel.getSection(details.section_id);
+      details.account = Object.assign({}, account);
+      details.college = Object.assign({}, college);
+      details.course = Object.assign({}, course);
+      details.section = Object.assign({}, section);
+      delete details.account_id;
+      delete details.college_id;
+      delete details.course_id;
+      delete details.section_id;
+      delete details.account.password;
+      response.status(200).json(
+        httpResource({
+          success: true,
+          code: 200,
+          message: "Record has been created successfully.",
+          data: details,
+        })
+      );
+    } catch (error) {
+      response.status(400).json(
+        httpResource({
+          success: false,
+          code: 400,
+          message: error,
+        })
+      );
+    }
+  },
   // async deleteAccount(request, response) {
   //   try {
   //     const id = parseInt(request.params.id);

@@ -15,12 +15,12 @@ router.post(
 //   accountController.getAccounts
 // );
 //
-// router.get(
-//   "/:id",
-//   middleware.authentication.passportAuthenticate,
-//   accountController.getAccountById
-// );
-//
+router.get(
+  "/:id",
+  middleware.authentication.passportAuthenticate,
+  studentController.getStudent
+);
+
 // router.delete(
 //   "/:id",
 //   middleware.authentication.passportAuthenticate,
