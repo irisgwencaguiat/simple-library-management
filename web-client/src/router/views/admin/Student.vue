@@ -97,6 +97,7 @@
                 item-text="name"
                 item-value="id"
                 v-model="form.collegeId"
+                @change="clearCourseAndSection"
               ></v-autocomplete>
             </v-col>
             <v-col cols="12" md="4">
@@ -108,6 +109,7 @@
                 item-value="id"
                 v-model="form.courseId"
                 :disabled="!form.collegeId"
+                @change="clearSection"
               ></v-autocomplete>
             </v-col>
             <v-col cols="12" md="4">
@@ -315,23 +317,6 @@ export default {
     },
   },
 
-  watch: {
-    // "form.collegeId"(value) {
-    //   const { courseId, sectionId } = this.form;
-    //   if (value && (courseId || sectionId)) {
-    //     this.form.courseId = null;
-    //     this.form.sectionId = null;
-    //   }
-    // },
-    //
-    // "form.courseId"(value) {
-    //   const { sectionId } = this.form;
-    //   if (value && sectionId) {
-    //     this.form.sectionId = null;
-    //   }
-    // },
-  },
-
   methods: {
     openCreateFormDialog() {
       this.formDialogOperation = "create";
@@ -360,7 +345,6 @@ export default {
         courseId: course.id,
         sectionId: section.id,
       });
-      console.log(this.form);
       this.isFormDialogOpen = true;
     },
 
@@ -410,9 +394,12 @@ export default {
     async updateStudent() {
       this.isUpdateStudentStart = true;
       const payload = {
-        id: this.selectedStudent.id,
-        name: this.form.name.trim() || null,
+        firstName: this.form.firstName.trim() || null,
+        lastName: this.form.lastName.trim() || null,
+        studentNumber: this.form.studentNumber.trim() || null,
+        collegeId: this.form.collegeId || null,
         courseId: this.form.courseId || null,
+        sectionId: this.form.sectionId || null,
       };
       const { success, message } = await this.$store.dispatch(
         UPDATE_STUDENT,
@@ -479,6 +466,21 @@ export default {
         });
       }
       this.isDeleteStudentStart = false;
+    },
+
+    clearCourseAndSection() {
+      const { collegeId, courseId, sectionId } = this.form;
+      if (collegeId && (courseId || sectionId)) {
+        this.form.courseId = null;
+        this.form.sectionId = null;
+      }
+    },
+
+    clearSection() {
+      const { collegeId, sectionId } = this.form;
+      if (collegeId && sectionId) {
+        this.form.sectionId = null;
+      }
     },
   },
 
