@@ -28,37 +28,30 @@ const bookCategoryController = {
       );
     }
   },
-  // async getSection(request, response) {
-  //   try {
-  //     const id = parseInt(request.params.id);
-  //     const sectionDetails = await sectionModel.getSection(id);
-  //     if (sectionDetails) {
-  //       const course = await courseModel.getCourse(sectionDetails.course_id);
-  //       const college = await collegeModel.getCollege(course.college_id);
-  //       sectionDetails.course = Object.assign({}, course);
-  //       sectionDetails.course.college = Object.assign({}, college);
-  //       delete sectionDetails.course_id;
-  //       delete sectionDetails.course.college_id;
-  //     }
-  //
-  //     response.status(200).json(
-  //       httpResource({
-  //         success: true,
-  //         code: 200,
-  //         message: "Record has been created successfully.",
-  //         data: sectionDetails,
-  //       })
-  //     );
-  //   } catch (error) {
-  //     response.status(400).json(
-  //       httpResource({
-  //         success: false,
-  //         code: 400,
-  //         message: error,
-  //       })
-  //     );
-  //   }
-  // },
+  async getBookCategory(request, response) {
+    try {
+      const id = parseInt(request.params.id);
+
+      const details = await bookCategoryModel.getBookCategory(id);
+
+      response.status(200).json(
+        httpResource({
+          success: true,
+          code: 200,
+          message: "Record has been created successfully.",
+          data: details,
+        })
+      );
+    } catch (error) {
+      response.status(400).json(
+        httpResource({
+          success: false,
+          code: 400,
+          message: error,
+        })
+      );
+    }
+  },
   // async getSections(request, response) {
   //   try {
   //     const sections = await sectionModel.getSections();

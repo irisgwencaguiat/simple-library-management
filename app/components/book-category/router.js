@@ -14,11 +14,12 @@ router.post(
 //   middleware.authentication.passportAuthenticate,
 //   sectionController.getSections
 // );
-// router.get(
-//   "/:id",
-//   middleware.authentication.passportAuthenticate,
-//   sectionController.getSection
-// );
+
+router.get(
+  "/:id",
+  middleware.authentication.passportAuthenticate,
+  bookCategoryController.getBookCategory
+);
 //
 // router.delete(
 //   "/:id",
