@@ -85,28 +85,28 @@ const bookCategoryController = {
       );
     }
   },
-  // async deleteSection(request, response) {
-  //   try {
-  //     const id = parseInt(request.params.id);
-  //     await sectionModel.deleteSection(id);
-  //     response.status(200).json(
-  //       httpResource({
-  //         success: true,
-  //         code: 200,
-  //         message: "Record has been created successfully.",
-  //         data: null,
-  //       })
-  //     );
-  //   } catch (error) {
-  //     response.status(400).json(
-  //       httpResource({
-  //         success: false,
-  //         code: 400,
-  //         message: error,
-  //       })
-  //     );
-  //   }
-  // },
+  async deleteBookCategory(request, response) {
+    try {
+      const id = parseInt(request.params.id);
+      await bookCategoryModel.deleteBookCategory(id);
+      response.status(200).json(
+        httpResource({
+          success: true,
+          code: 200,
+          message: "Record has been created successfully.",
+          data: null,
+        })
+      );
+    } catch (error) {
+      response.status(400).json(
+        httpResource({
+          success: false,
+          code: 400,
+          message: error,
+        })
+      );
+    }
+  },
   // async updateSectionDetails(request, response) {
   //   try {
   //     const { id, name, course_id } = request.body;

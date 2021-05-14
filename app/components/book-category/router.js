@@ -20,13 +20,13 @@ router.get(
   middleware.authentication.passportAuthenticate,
   bookCategoryController.getBookCategory
 );
-//
-// router.delete(
-//   "/:id",
-//   middleware.authentication.passportAuthenticate,
-//   sectionController.deleteSection
-// );
-//
+
+router.delete(
+  "/:id",
+  middleware.authentication.passportAuthenticate,
+  bookCategoryController.deleteBookCategory
+);
+
 // router.put(
 //   "/",
 //   middleware.authentication.passportAuthenticate,
