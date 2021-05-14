@@ -282,6 +282,23 @@ export default {
     },
   },
 
+  watch: {
+    "form.collegeId"(value) {
+      const { courseId, sectionId } = this.form;
+      if (value && (courseId || sectionId)) {
+        this.form.courseId = null;
+        this.form.sectionId = null;
+      }
+    },
+
+    "form.courseId"(value) {
+      const { sectionId } = this.form;
+      if (value && sectionId) {
+        this.form.sectionId = null;
+      }
+    },
+  },
+
   methods: {
     openCreateFormDialog() {
       this.formDialogOperation = "create";
