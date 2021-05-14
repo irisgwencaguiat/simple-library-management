@@ -326,17 +326,7 @@ export default {
     openUpdateFormDialog(student) {
       this.formDialogOperation = "update";
       const { account, student_number, college, course, section } = student;
-      this.selectedStudent = Object.assign(
-        {},
-        {
-          firstName: account.first_name,
-          lastName: account.last_name,
-          studentNumber: student_number,
-          collegeId: college.id,
-          courseId: course.id,
-          sectionId: section.id,
-        }
-      );
+      this.selectedStudent = Object.assign({}, student);
       this.form = Object.assign(this.form, {
         firstName: account.first_name,
         lastName: account.last_name,
@@ -394,6 +384,7 @@ export default {
     async updateStudent() {
       this.isUpdateStudentStart = true;
       const payload = {
+        id: this.selectedStudent.id,
         firstName: this.form.firstName.trim() || null,
         lastName: this.form.lastName.trim() || null,
         studentNumber: this.form.studentNumber.trim() || null,

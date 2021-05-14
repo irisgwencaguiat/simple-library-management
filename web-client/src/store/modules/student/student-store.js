@@ -27,13 +27,19 @@ const studentStore = {
       }
     },
 
-    async [UPDATE_STUDENT](_, { id, name, shortName, courseId }) {
+    async [UPDATE_STUDENT](
+      _,
+      { id, firstName, lastName, studentNumber, collegeId, courseId, sectionId }
+    ) {
       try {
         const response = await apiService.put("/student", {
           id,
-          name,
-          short_name: shortName,
+          first_name: firstName,
+          last_name: lastName,
+          student_number: studentNumber,
+          college_id: collegeId,
           course_id: courseId,
+          section_id: sectionId,
         });
         return response.data;
       } catch (error) {
