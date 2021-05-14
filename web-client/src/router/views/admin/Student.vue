@@ -26,8 +26,19 @@
           ></v-text-field>
         </v-card-text>
       </template>
+      <template v-slot:item.name="{ item }">
+        <span class="text-capitalize"
+          >{{ item.account.first_name }} {{ item.account.last_name }}</span
+        >
+      </template>
+      <template v-slot:item.college="{ item }">
+        <span class="text-capitalize">{{ item.college.name }}</span>
+      </template>
       <template v-slot:item.course="{ item }">
         <span class="text-capitalize">{{ item.course.name }}</span>
+      </template>
+      <template v-slot:item.section="{ item }">
+        <span class="text-capitalize">{{ item.section.name }}</span>
       </template>
       <template v-slot:item.created_at="{ item }">
         {{ formatCreatedAt(item.created_at) }}
@@ -245,8 +256,23 @@ export default {
           sortable: false,
         },
         {
+          text: "Student Number",
+          value: "student_number",
+          sortable: false,
+        },
+        {
+          text: "College",
+          value: "college",
+          sortable: false,
+        },
+        {
           text: "Course",
           value: "course",
+          sortable: false,
+        },
+        {
+          text: "Section",
+          value: "section",
           sortable: false,
         },
         {
@@ -274,10 +300,17 @@ export default {
     tableItems() {
       if (!this.search) return this.students;
       return this.students.filter((student) => {
-        const { name, course } = student;
+        const { account, student_number, college, course, section } = student;
         const keyword = this.search.toLowerCase().trim();
-        if (name.toLowerCase().trim().includes(keyword)) return student;
+        if (account.first_name.toLowerCase().trim().includes(keyword))
+          return student;
+        if (account.last_name.toLowerCase().trim().includes(keyword))
+          return student;
+        if (student_number.toLowerCase().trim().includes(keyword))
+          return student;
+        if (college.name.toLowerCase().trim().includes(keyword)) return student;
         if (course.name.toLowerCase().trim().includes(keyword)) return student;
+        if (section.name.toLowerCase().trim().includes(keyword)) return student;
       });
     },
   },
@@ -330,8 +363,12 @@ export default {
     async createStudent() {
       this.isCreateStudentStart = true;
       const payload = {
-        name: this.form.name.trim() || null,
+        firstName: this.form.firstName.trim() || null,
+        lastName: this.form.lastName.trim() || null,
+        studentNumber: this.form.studentNumber.trim() || null,
+        collegeId: this.form.collegeId || null,
         courseId: this.form.courseId || null,
+        sectionId: this.form.sectionId || null,
       };
       const { success, message } = await this.$store.dispatch(
         CREATE_STUDENT,
@@ -343,7 +380,7 @@ export default {
         this.errorMessage = message;
         return;
       }
-      // await this.getStudents();
+      await this.getStudents();
       this.isFormDialogOpen = false;
       this.$store.commit(SET_NOTIFICATION_SNACKBAR_CONFIGURATION, {
         text: message,
@@ -372,7 +409,7 @@ export default {
         this.errorMessage = message;
         return;
       }
-      // await this.getStudents();
+      await this.getStudents();
       this.isFormDialogOpen = false;
       this.$store.commit(SET_NOTIFICATION_SNACKBAR_CONFIGURATION, {
         text: message,
@@ -419,7 +456,7 @@ export default {
         this.selectedStudent.id
       );
       if (success) {
-        // await this.getStudents();
+        await this.getStudents();
         this.isDeleteAlertDialogOpen = false;
         this.$store.commit(SET_NOTIFICATION_SNACKBAR_CONFIGURATION, {
           text: message,
@@ -431,7 +468,7 @@ export default {
   },
 
   async created() {
-    // await this.getStudents();
+    await this.getStudents();
     await this.getColleges();
     await this.getCourses();
     await this.getSections();

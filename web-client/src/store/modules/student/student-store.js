@@ -8,12 +8,18 @@ import {
 
 const studentStore = {
   actions: {
-    async [CREATE_STUDENT](_, { name, shortName, courseId }) {
+    async [CREATE_STUDENT](
+      _,
+      { firstName, lastName, studentNumber, collegeId, courseId, sectionId }
+    ) {
       try {
         const response = await apiService.post("/student", {
-          name,
-          short_name: shortName,
+          first_name: firstName,
+          last_name: lastName,
+          student_number: studentNumber,
+          college_id: collegeId,
           course_id: courseId,
+          section_id: sectionId,
         });
         return response.data;
       } catch (error) {
