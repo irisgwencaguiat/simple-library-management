@@ -101,7 +101,7 @@
             </v-col>
             <v-col cols="12" md="4">
               <v-autocomplete
-                :items="sections"
+                :items="sectionValues"
                 label="Section"
                 outlined
                 item-text="name"
@@ -229,6 +229,12 @@ export default {
       const { collegeId } = this.form;
       if (!collegeId) return [];
       return this.courses.filter((course) => course.college.id === collegeId);
+    },
+
+    sectionValues() {
+      const { courseId } = this.form;
+      if (!courseId) return [];
+      return this.sections.filter((section) => section.course.id === courseId);
     },
 
     tableHeaders() {
