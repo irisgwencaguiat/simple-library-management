@@ -23,6 +23,12 @@ const routes = [
       },
 
       {
+        path: "student",
+        name: "dashboard-admin-student-view",
+        component: () => import("@/router/views/admin/Student"),
+      },
+
+      {
         path: "admin",
         name: "dashboard-admin-account-view",
         component: () => import("@/router/views/admin/Account"),

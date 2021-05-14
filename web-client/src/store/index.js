@@ -6,6 +6,7 @@ import configurationStore from "@/store/modules/configuration/configuration-stor
 import collegeStore from "@/store/modules/college/college-store";
 import courseStore from "@/store/modules/course/course-store";
 import sectionStore from "@/store/modules/section/section-store";
+import studentStore from "@/store/modules/student/student-store";
 
 Vue.use(Vuex);
 
@@ -17,5 +18,6 @@ export default new Vuex.Store({
     college: collegeStore,
     course: courseStore,
     section: sectionStore,
+    student: studentStore,
   },
 });
