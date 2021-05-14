@@ -52,43 +52,39 @@ const bookCategoryController = {
       );
     }
   },
-  // async getSections(request, response) {
-  //   try {
-  //     const sections = await sectionModel.getSections();
-  //     let sectionsDetails = [];
-  //     if (sections.length > 0) {
-  //       sectionsDetails = await Promise.all(
-  //         sections.map(async (data) => {
-  //           const section = data;
-  //           const course = await courseModel.getCourse(section.course_id);
-  //           const college = await collegeModel.getCollege(course.college_id);
-  //           section.course = Object.assign({}, course);
-  //           section.course.college = Object.assign({}, college);
-  //           delete section.course_id;
-  //           delete section.course.college_id;
-  //           return section;
-  //         })
-  //       );
-  //     }
-  //
-  //     response.status(200).json(
-  //       httpResource({
-  //         success: true,
-  //         code: 200,
-  //         message: "Record has been created successfully.",
-  //         data: sectionsDetails,
-  //       })
-  //     );
-  //   } catch (error) {
-  //     response.status(400).json(
-  //       httpResource({
-  //         success: false,
-  //         code: 400,
-  //         message: error,
-  //       })
-  //     );
-  //   }
-  // },
+  async getBookCategories(request, response) {
+    try {
+      const bookCategories = await bookCategoryModel.getBookCategories();
+      let bookCategoriesDetails = [];
+      if (bookCategories.length > 0) {
+        bookCategoriesDetails = await Promise.all(
+          bookCategories.map(async (data) => {
+            const bookCategory = await bookCategoryModel.getBookCategory(
+              data.id
+            );
+            return bookCategory;
+          })
+        );
+      }
+
+      response.status(200).json(
+        httpResource({
+          success: true,
+          code: 200,
+          message: "Record has been created successfully.",
+          data: bookCategoriesDetails,
+        })
+      );
+    } catch (error) {
+      response.status(400).json(
+        httpResource({
+          success: false,
+          code: 400,
+          message: error,
+        })
+      );
+    }
+  },
   // async deleteSection(request, response) {
   //   try {
   //     const id = parseInt(request.params.id);

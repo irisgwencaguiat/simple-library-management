@@ -9,11 +9,11 @@ router.post(
   bookCategoryController.createBookCategory
 );
 
-// router.get(
-//   "/",
-//   middleware.authentication.passportAuthenticate,
-//   sectionController.getSections
-// );
+router.get(
+  "/",
+  middleware.authentication.passportAuthenticate,
+  bookCategoryController.getBookCategories
+);
 
 router.get(
   "/:id",

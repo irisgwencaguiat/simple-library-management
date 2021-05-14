@@ -13,12 +13,12 @@ const bookCategoryModel = {
       .andWhere("id", id)
       .then((result) => result[0] || null);
   },
-  // async getSections() {
-  //   return await knex("section")
-  //     .where("is_deleted", false)
-  //     .orderBy("created_at", "desc")
-  //     .then((result) => result || []);
-  // },
+  async getBookCategories() {
+    return await knex("book_category")
+      .where("is_deleted", false)
+      .orderBy("created_at", "desc")
+      .then((result) => result || []);
+  },
   // async deleteSection(id) {
   //   await knex("section").where("id", id).update("is_deleted", true);
   // },
