@@ -90,12 +90,13 @@
             </v-col>
             <v-col cols="12" md="4">
               <v-autocomplete
-                :items="courses"
+                :items="courseValues"
                 label="Course"
                 outlined
                 item-text="name"
                 item-value="id"
                 v-model="form.courseId"
+                :disabled="!form.collegeId"
               ></v-autocomplete>
             </v-col>
             <v-col cols="12" md="4">
@@ -106,6 +107,7 @@
                 item-text="name"
                 item-value="id"
                 v-model="form.sectionId"
+                :disabled="!form.courseId"
               ></v-autocomplete>
             </v-col>
           </v-row>
@@ -205,8 +207,28 @@ export default {
     },
 
     isFormValid() {
-      const { name, courseId } = this.form;
-      return name && courseId;
+      const {
+        firstName,
+        lastName,
+        studentNumber,
+        collegeId,
+        courseId,
+        sectionId,
+      } = this.form;
+      return (
+        firstName &&
+        lastName &&
+        studentNumber &&
+        collegeId &&
+        courseId &&
+        sectionId
+      );
+    },
+
+    courseValues() {
+      const { collegeId } = this.form;
+      if (!collegeId) return [];
+      return this.courses.filter((course) => course.college.id === collegeId);
     },
 
     tableHeaders() {

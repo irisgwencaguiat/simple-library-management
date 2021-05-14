@@ -87,9 +87,14 @@ export default {
             icon: "mdi-view-dashboard",
           },
           {
+            text: "Students",
+            to: { name: "dashboard-admin-student-view" },
+            icon: "mdi-account",
+          },
+          {
             text: "Admins",
             to: { name: "dashboard-admin-account-view" },
-            icon: "mdi-account",
+            icon: "mdi-shield-account",
           },
           {
             text: "Colleges",
