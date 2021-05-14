@@ -243,6 +243,8 @@ export default {
     },
 
     closeUpdateFormDialog() {
+      this.error = false;
+      this.errorMessage = null;
       this.formDialogOperation = "create";
       this.form = Object.assign({}, this.defaultForm);
       this.isFormDialogOpen = false;
