@@ -22,14 +22,14 @@ const bookCategoryModel = {
   async deleteBookCategory(id) {
     await knex("book_category").where("id", id).update("is_deleted", true);
   },
-  // async updateSection(id, input) {
-  //   return await knex("section")
-  //     .where("id", id)
-  //     .andWhere("is_deleted", false)
-  //     .update({ ...input })
-  //     .returning(["id"])
-  //     .then((result) => result[0] || null);
-  // },
+  async updateBookCategoryDetails(id, input) {
+    return await knex("book_category")
+      .where("id", id)
+      .andWhere("is_deleted", false)
+      .update({ ...input })
+      .returning(["id"])
+      .then((result) => result[0] || null);
+  },
 };
 
 module.exports = bookCategoryModel;

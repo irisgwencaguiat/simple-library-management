@@ -27,9 +27,9 @@ router.delete(
   bookCategoryController.deleteBookCategory
 );
 
-// router.put(
-//   "/",
-//   middleware.authentication.passportAuthenticate,
-//   sectionController.updateSectionDetails
-// );
+router.put(
+  "/",
+  middleware.authentication.passportAuthenticate,
+  bookCategoryController.updateBookCategoryDetails
+);
 module.exports = router;

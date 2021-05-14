@@ -107,38 +107,37 @@ const bookCategoryController = {
       );
     }
   },
-  // async updateSectionDetails(request, response) {
-  //   try {
-  //     const { id, name, course_id } = request.body;
-  //     const payload = {};
-  //     if (name) payload.name = name;
-  //     if (course_id) payload.course_id = course_id;
-  //     const updatedSection = await sectionModel.updateSection(id, payload);
-  //     const section = await sectionModel.getSection(updatedSection.id);
-  //     const course = await courseModel.getCourse(section.course_id);
-  //     const college = await collegeModel.getCollege(course.college_id);
-  //     section.course = Object.assign({}, course);
-  //     section.course.college = Object.assign({}, college);
-  //     delete section.course_id;
-  //     delete section.course.college_id;
-  //     response.status(200).json(
-  //       httpResource({
-  //         success: true,
-  //         code: 200,
-  //         message: "Record has been created successfully.",
-  //         data: section,
-  //       })
-  //     );
-  //   } catch (error) {
-  //     response.status(400).json(
-  //       httpResource({
-  //         success: false,
-  //         code: 400,
-  //         message: error,
-  //       })
-  //     );
-  //   }
-  // },
+  async updateBookCategoryDetails(request, response) {
+    try {
+      const { id, name, description } = request.body;
+      const payload = {};
+      if (name) payload.name = name;
+      if (description) payload.description = description;
+      const updatedBookCategory = await bookCategoryModel.updateBookCategoryDetails(
+        id,
+        payload
+      );
+      const bookCategory = await bookCategoryModel.getBookCategory(
+        updatedBookCategory.id
+      );
+      response.status(200).json(
+        httpResource({
+          success: true,
+          code: 200,
+          message: "Record has been created successfully.",
+          data: bookCategory,
+        })
+      );
+    } catch (error) {
+      response.status(400).json(
+        httpResource({
+          success: false,
+          code: 400,
+          message: error,
+        })
+      );
+    }
+  },
 };
 
 module.exports = bookCategoryController;
