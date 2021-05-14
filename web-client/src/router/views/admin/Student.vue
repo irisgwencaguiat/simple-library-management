@@ -316,20 +316,20 @@ export default {
   },
 
   watch: {
-    "form.collegeId"(value) {
-      const { courseId, sectionId } = this.form;
-      if (value && (courseId || sectionId)) {
-        this.form.courseId = null;
-        this.form.sectionId = null;
-      }
-    },
-
-    "form.courseId"(value) {
-      const { sectionId } = this.form;
-      if (value && sectionId) {
-        this.form.sectionId = null;
-      }
-    },
+    // "form.collegeId"(value) {
+    //   const { courseId, sectionId } = this.form;
+    //   if (value && (courseId || sectionId)) {
+    //     this.form.courseId = null;
+    //     this.form.sectionId = null;
+    //   }
+    // },
+    //
+    // "form.courseId"(value) {
+    //   const { sectionId } = this.form;
+    //   if (value && sectionId) {
+    //     this.form.sectionId = null;
+    //   }
+    // },
   },
 
   methods: {
@@ -340,12 +340,27 @@ export default {
 
     openUpdateFormDialog(student) {
       this.formDialogOperation = "update";
-      this.selectedStudent = Object.assign({}, student);
-      const { name, course } = student;
+      const { account, student_number, college, course, section } = student;
+      this.selectedStudent = Object.assign(
+        {},
+        {
+          firstName: account.first_name,
+          lastName: account.last_name,
+          studentNumber: student_number,
+          collegeId: college.id,
+          courseId: course.id,
+          sectionId: section.id,
+        }
+      );
       this.form = Object.assign(this.form, {
-        name,
+        firstName: account.first_name,
+        lastName: account.last_name,
+        studentNumber: student_number,
+        collegeId: college.id,
         courseId: course.id,
+        sectionId: section.id,
       });
+      console.log(this.form);
       this.isFormDialogOpen = true;
     },
 
