@@ -46,7 +46,7 @@
         <v-card-title>
           <span>{{ formDialogTitle }}</span>
           <v-spacer> </v-spacer>
-          <v-btn icon @click="closeUpdateFormDialog">
+          <v-btn icon @click="closeFormDialog">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-card-title>
@@ -227,7 +227,7 @@ export default {
       this.isFormDialogOpen = true;
     },
 
-    closeUpdateFormDialog() {
+    closeFormDialog() {
       this.error = false;
       this.errorMessage = null;
       this.formDialogOperation = "create";
