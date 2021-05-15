@@ -97,6 +97,11 @@ export default {
             icon: "mdi-shield-account",
           },
           {
+            text: "Book Categories",
+            to: { name: "dashboard-admin-book-category-view" },
+            icon: "mdi-bookshelf",
+          },
+          {
             text: "Colleges",
             to: { name: "dashboard-admin-college-view" },
             icon: "mdi-school",
