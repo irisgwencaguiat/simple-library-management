@@ -11,7 +11,7 @@
       >
     </v-card-title>
     <v-data-table
-      :loading="isGetCollegesStart"
+      :loading="isGetBookCategoriesStart"
       :items="tableItems"
       :headers="tableHeaders"
     >
@@ -63,9 +63,9 @@
             </v-col>
             <v-col cols="12">
               <v-text-field
-                label="Short Name"
+                label="Description"
                 outlined
-                v-model="form.shortName"
+                v-model="form.description"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -74,8 +74,8 @@
           <v-btn
             color="primary"
             block
-            @click="createCollege"
-            :loading="isCreateCollegeStart"
+            @click="createBookCategory"
+            :loading="isCreateBookCategoryStart"
             :disabled="!isFormValid"
             v-if="isFormDialogCreateOperation"
             >Create</v-btn
@@ -83,8 +83,8 @@
           <v-btn
             color="primary"
             block
-            @click="updateCollege"
-            :loading="isUpdateCollegeStart"
+            @click="updateBookCategory"
+            :loading="isUpdateBookCategoryStart"
             :disabled="!isFormValid"
             v-if="isFormDialogUpdateOperation"
             >Update</v-btn
@@ -97,27 +97,27 @@
       title="Delete College"
       type="error"
       text="This actions is irreversible, click confirm if you are sure."
-      :loading="isDeleteCollegeStart"
-      :action="deleteCollege"
+      :loading="isDeleteBookCategoryStart"
+      :action="deleteBookCategory"
     ></custom-alert-dialog>
   </v-card>
 </template>
 
 <script>
 import CustomPasswordInput from "@/components/custom/PasswordInput";
-import {
-  CREATE_COLLEGE,
-  DELETE_COLLEGE,
-  GET_COLLEGES,
-  UPDATE_COLLEGE,
-} from "@/store/modules/college/college-types";
 import dateMixin from "@/mixins/date-mixin";
 import { SET_NOTIFICATION_SNACKBAR_CONFIGURATION } from "@/store/modules/configuration/configuration-types";
 import CustomAlertDialog from "@/components/custom/AlertDialog";
+import {
+  CREATE_BOOK_CATEGORY,
+  DELETE_BOOK_CATEGORY,
+  GET_BOOK_CATEGORIES,
+  UPDATE_BOOK_CATEGORY,
+} from "@/store/modules/book-category/book-category-types";
 
 const defaultForm = {
   name: null,
-  shortName: null,
+  description: null,
 };
 
 export default {
@@ -131,29 +131,29 @@ export default {
       form: Object.assign({}, defaultForm),
       defaultForm,
       formDialogOperation: null,
-      isCreateCollegeStart: false,
-      isUpdateCollegeStart: false,
+      isCreateBookCategoryStart: false,
+      isUpdateBookCategoryStart: false,
       error: false,
       errorMessage: null,
-      isGetCollegesStart: false,
-      colleges: [],
+      isGetBookCategoriesStart: false,
+      bookCategories: [],
       search: null,
-      selectedCollege: null,
+      selectedBookCategory: null,
       isDeleteAlertDialogOpen: false,
-      isDeleteCollegeStart: false,
+      isDeleteBookCategoryStart: false,
     };
   },
 
   computed: {
     formDialogTitle() {
       return this.formDialogOperation && this.formDialogOperation === "create"
-        ? "Create College"
-        : "Update College";
+        ? "Create Book Category"
+        : "Update Book Category";
     },
 
     isFormValid() {
-      const { name, shortName } = this.form;
-      return name && shortName;
+      const { name, description } = this.form;
+      return name && description;
     },
 
     tableHeaders() {
@@ -164,8 +164,8 @@ export default {
           sortable: false,
         },
         {
-          text: "Short Name",
-          value: "short_name",
+          text: "Description",
+          value: "description",
           sortable: false,
         },
         {
@@ -191,12 +191,12 @@ export default {
     },
 
     tableItems() {
-      if (!this.search) return this.colleges;
-      return this.colleges.filter((college) => {
-        const { name, short_name } = college;
+      if (!this.search) return this.bookCategories;
+      return this.bookCategories.filter((college) => {
+        const { name, description } = college;
         const keyword = this.search.toLowerCase().trim();
         if (name.toLowerCase().trim().includes(keyword)) return college;
-        if (short_name.toLowerCase().trim().includes(keyword)) return college;
+        if (description.toLowerCase().trim().includes(keyword)) return college;
       });
     },
   },
@@ -209,11 +209,11 @@ export default {
 
     openUpdateFormDialog(college) {
       this.formDialogOperation = "update";
-      this.selectedCollege = Object.assign({}, college);
-      const { name, short_name } = college;
+      this.selectedBookCategory = Object.assign({}, college);
+      const { name, description } = college;
       this.form = Object.assign(this.form, {
         name,
-        shortName: short_name,
+        description,
       });
       this.isFormDialogOpen = true;
     },
@@ -227,27 +227,27 @@ export default {
     },
 
     openDeleteAlertDialog(college) {
-      this.selectedCollege = Object.assign({}, college);
+      this.selectedBookCategory = Object.assign({}, college);
       this.isDeleteAlertDialogOpen = true;
     },
 
-    async createCollege() {
-      this.isCreateCollegeStart = true;
+    async createBookCategory() {
+      this.isCreateBookCategoryStart = true;
       const payload = {
         name: this.form.name.trim() || null,
-        shortName: this.form.shortName.trim() || null,
+        description: this.form.description.trim() || null,
       };
       const { success, message } = await this.$store.dispatch(
-        CREATE_COLLEGE,
+        CREATE_BOOK_CATEGORY,
         payload
       );
       if (!success) {
-        this.isCreateCollegeStart = false;
+        this.isCreateBookCategoryStart = false;
         this.error = true;
         this.errorMessage = message;
         return;
       }
-      await this.getColleges();
+      await this.getBookCategories();
       this.isFormDialogOpen = false;
       this.$store.commit(SET_NOTIFICATION_SNACKBAR_CONFIGURATION, {
         text: message,
@@ -256,27 +256,27 @@ export default {
       this.form = Object.assign({}, this.defaultForm);
       this.error = false;
       this.errorMessage = null;
-      this.isCreateCollegeStart = false;
+      this.isCreateBookCategoryStart = false;
     },
 
-    async updateCollege() {
-      this.isUpdateCollegeStart = true;
+    async updateBookCategory() {
+      this.isUpdateBookCategoryStart = true;
       const payload = {
-        id: this.selectedCollege.id,
+        id: this.selectedBookCategory.id,
         name: this.form.name.trim() || null,
-        shortName: this.form.shortName.trim() || null,
+        description: this.form.description.trim() || null,
       };
       const { success, message } = await this.$store.dispatch(
-        UPDATE_COLLEGE,
+        UPDATE_BOOK_CATEGORY,
         payload
       );
       if (!success) {
-        this.isUpdateCollegeStart = false;
+        this.isUpdateBookCategoryStart = false;
         this.error = true;
         this.errorMessage = message;
         return;
       }
-      await this.getColleges();
+      await this.getBookCategories();
       this.isFormDialogOpen = false;
       this.$store.commit(SET_NOTIFICATION_SNACKBAR_CONFIGURATION, {
         text: message,
@@ -285,36 +285,36 @@ export default {
       this.form = Object.assign({}, this.defaultForm);
       this.error = false;
       this.errorMessage = null;
-      this.isUpdateCollegeStart = false;
+      this.isUpdateBookCategoryStart = false;
     },
 
-    async getColleges() {
-      this.isGetCollegesStart = true;
-      const { data } = await this.$store.dispatch(GET_COLLEGES);
-      this.colleges = data;
-      this.isGetCollegesStart = false;
+    async getBookCategories() {
+      this.isGetBookCategoriesStart = true;
+      const { data } = await this.$store.dispatch(GET_BOOK_CATEGORIES);
+      this.bookCategories = data;
+      this.isGetBookCategoriesStart = false;
     },
 
-    async deleteCollege() {
-      this.isDeleteCollegeStart = true;
+    async deleteBookCategory() {
+      this.isDeleteBookCategoryStart = true;
       const { success, message } = await this.$store.dispatch(
-        DELETE_COLLEGE,
-        this.selectedCollege.id
+        DELETE_BOOK_CATEGORY,
+        this.selectedBookCategory.id
       );
       if (success) {
-        await this.getColleges();
+        await this.getBookCategories();
         this.isDeleteAlertDialogOpen = false;
         this.$store.commit(SET_NOTIFICATION_SNACKBAR_CONFIGURATION, {
           text: message,
           color: "error",
         });
       }
-      this.isDeleteCollegeStart = false;
+      this.isDeleteBookCategoryStart = false;
     },
   },
 
   async created() {
-    await this.getColleges();
+    await this.getBookCategories();
   },
 };
 </script>
