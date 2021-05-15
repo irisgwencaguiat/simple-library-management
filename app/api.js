@@ -7,6 +7,7 @@ const courseRouter = require("./components/course/router");
 const sectionRouter = require("./components/section/router");
 const studentRouter = require("./components/student/router");
 const bookCategoryRouter = require("./components/book-category/router");
+const bookRouter = require("./components/book/router");
 
 api.use("/authentication", authenticationRouter);
 api.use("/account", accountRouter);
@@ -15,4 +16,5 @@ api.use("/course", courseRouter);
 api.use("/section", sectionRouter);
 api.use("/student", studentRouter);
 api.use("/book-category", bookCategoryRouter);
+api.use("/book", bookRouter);
 module.exports = api;
