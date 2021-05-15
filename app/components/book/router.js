@@ -17,13 +17,13 @@ router.post(
 //   middleware.authentication.passportAuthenticate,
 //   bookCategoryController.getBookCategories
 // );
-//
-// router.get(
-//   "/:id",
-//   middleware.authentication.passportAuthenticate,
-//   bookCategoryController.getBookCategory
-// );
-//
+
+router.get(
+  "/:id",
+  middleware.authentication.passportAuthenticate,
+  bookController.getBook
+);
+
 // router.delete(
 //   "/:id",
 //   middleware.authentication.passportAuthenticate,

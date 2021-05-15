@@ -22,6 +22,7 @@ const bookController = {
         details.book_category_id
       );
       details.book_category = Object.assign({}, bookCategory);
+      delete details.book_category_id;
       response.status(200).json(
         httpResource({
           success: true,
@@ -40,30 +41,35 @@ const bookController = {
       );
     }
   },
-  // async getBookCategory(request, response) {
-  //   try {
-  //     const id = parseInt(request.params.id);
-  //
-  //     const details = await bookCategoryModel.getBookCategory(id);
-  //
-  //     response.status(200).json(
-  //       httpResource({
-  //         success: true,
-  //         code: 200,
-  //         message: "Record has been created successfully.",
-  //         data: details,
-  //       })
-  //     );
-  //   } catch (error) {
-  //     response.status(400).json(
-  //       httpResource({
-  //         success: false,
-  //         code: 400,
-  //         message: error,
-  //       })
-  //     );
-  //   }
-  // },
+  async getBook(request, response) {
+    try {
+      const id = parseInt(request.params.id);
+
+      const details = await bookModel.getBook(id);
+      const bookCategory = await bookCategoryModel.getBookCategory(
+        details.book_category_id
+      );
+      details.book_category = Object.assign({}, bookCategory);
+      delete details.book_category_id;
+
+      response.status(200).json(
+        httpResource({
+          success: true,
+          code: 200,
+          message: "Record has been created successfully.",
+          data: details,
+        })
+      );
+    } catch (error) {
+      response.status(400).json(
+        httpResource({
+          success: false,
+          code: 400,
+          message: error,
+        })
+      );
+    }
+  },
   // async getBookCategories(request, response) {
   //   try {
   //     const bookCategories = await bookCategoryModel.getBookCategories();
