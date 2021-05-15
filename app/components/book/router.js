@@ -24,15 +24,18 @@ router.get(
   bookController.getBook
 );
 
-// router.delete(
-//   "/:id",
-//   middleware.authentication.passportAuthenticate,
-//   bookCategoryController.deleteBookCategory
-// );
-//
-// router.put(
-//   "/",
-//   middleware.authentication.passportAuthenticate,
-//   bookCategoryController.updateBookCategoryDetails
-// );
+router.delete(
+  "/:id",
+  middleware.authentication.passportAuthenticate,
+  bookController.deleteBook
+);
+
+router.put(
+  "/",
+  [
+    middleware.multer().single("book"),
+    middleware.authentication.passportAuthenticate,
+  ],
+  bookController.updateBookDetails
+);
 module.exports = router;

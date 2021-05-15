@@ -107,59 +107,69 @@ const bookController = {
       );
     }
   },
-  // async deleteBookCategory(request, response) {
-  //   try {
-  //     const id = parseInt(request.params.id);
-  //     await bookCategoryModel.deleteBookCategory(id);
-  //     response.status(200).json(
-  //       httpResource({
-  //         success: true,
-  //         code: 200,
-  //         message: "Record has been created successfully.",
-  //         data: null,
-  //       })
-  //     );
-  //   } catch (error) {
-  //     response.status(400).json(
-  //       httpResource({
-  //         success: false,
-  //         code: 400,
-  //         message: error,
-  //       })
-  //     );
-  //   }
-  // },
-  // async updateBookCategoryDetails(request, response) {
-  //   try {
-  //     const { id, name, description } = request.body;
-  //     const payload = {};
-  //     if (name) payload.name = name;
-  //     if (description) payload.description = description;
-  //     const updatedBookCategory = await bookCategoryModel.updateBookCategoryDetails(
-  //       id,
-  //       payload
-  //     );
-  //     const bookCategory = await bookCategoryModel.getBookCategory(
-  //       updatedBookCategory.id
-  //     );
-  //     response.status(200).json(
-  //       httpResource({
-  //         success: true,
-  //         code: 200,
-  //         message: "Record has been created successfully.",
-  //         data: bookCategory,
-  //       })
-  //     );
-  //   } catch (error) {
-  //     response.status(400).json(
-  //       httpResource({
-  //         success: false,
-  //         code: 400,
-  //         message: error,
-  //       })
-  //     );
-  //   }
-  // },
+  async deleteBook(request, response) {
+    try {
+      const id = parseInt(request.params.id);
+      await bookModel.deleteBook(id);
+      response.status(200).json(
+        httpResource({
+          success: true,
+          code: 200,
+          message: "Record has been created successfully.",
+          data: null,
+        })
+      );
+    } catch (error) {
+      response.status(400).json(
+        httpResource({
+          success: false,
+          code: 400,
+          message: error,
+        })
+      );
+    }
+  },
+  async updateBookDetails(request, response) {
+    try {
+      const { id, name, description, book_category_id } = request.body;
+      const bookFile = request.file || null;
+      const uploadedBook = await cloudinaryController.upload(bookFile, "books");
+
+      const payload = {};
+      if (name) payload.name = name;
+      if (description) payload.description = description;
+      if (book_category_id)
+        payload.book_category_id = parseInt(book_category_id);
+      if (bookFile) payload.url = uploadedBook.url;
+      const updatedBook = await bookModel.updateBookDetails(
+        parseInt(id),
+        payload
+      );
+      const details = await bookModel.getBook(updatedBook.id);
+      const bookCategory = await bookCategoryModel.getBookCategory(
+        details.book_category_id
+      );
+      details.book_category = Object.assign({}, bookCategory);
+      delete details.book_category_id;
+
+      response.status(200).json(
+        httpResource({
+          success: true,
+          code: 200,
+          message: "Record has been created successfully.",
+          data: details,
+        })
+      );
+    } catch (error) {
+      response.status(400).json(
+        httpResource({
+          success: false,
+          code: 400,
+          message: error,
+        })
+      );
+    }
+  },
 };
 
 module.exports = bookController;

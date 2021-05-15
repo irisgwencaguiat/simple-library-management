@@ -22,17 +22,17 @@ const bookModel = {
       .orderBy("created_at", "desc")
       .then((result) => result || []);
   },
-  // async deleteBookCategory(id) {
-  //   await knex("book_category").where("id", id).update("is_deleted", true);
-  // },
-  // async updateBookCategoryDetails(id, input) {
-  //   return await knex("book_category")
-  //     .where("id", id)
-  //     .andWhere("is_deleted", false)
-  //     .update({ ...input })
-  //     .returning(["id"])
-  //     .then((result) => result[0] || null);
-  // },
+  async deleteBook(id) {
+    await knex("book").where("id", id).update("is_deleted", true);
+  },
+  async updateBookDetails(id, input) {
+    return await knex("book")
+      .where("id", id)
+      .andWhere("is_deleted", false)
+      .update({ ...input })
+      .returning(["id"])
+      .then((result) => result[0] || null);
+  },
 };
 
 module.exports = bookModel;
