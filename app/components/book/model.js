@@ -16,12 +16,12 @@ const bookModel = {
       .andWhere("id", id)
       .then((result) => result[0] || null);
   },
-  // async getBookCategories() {
-  //   return await knex("book_category")
-  //     .where("is_deleted", false)
-  //     .orderBy("created_at", "desc")
-  //     .then((result) => result || []);
-  // },
+  async getBooks() {
+    return await knex("book")
+      .where("is_deleted", false)
+      .orderBy("created_at", "desc")
+      .then((result) => result || []);
+  },
   // async deleteBookCategory(id) {
   //   await knex("book_category").where("id", id).update("is_deleted", true);
   // },

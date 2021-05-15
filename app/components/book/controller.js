@@ -70,39 +70,43 @@ const bookController = {
       );
     }
   },
-  // async getBookCategories(request, response) {
-  //   try {
-  //     const bookCategories = await bookCategoryModel.getBookCategories();
-  //     let bookCategoriesDetails = [];
-  //     if (bookCategories.length > 0) {
-  //       bookCategoriesDetails = await Promise.all(
-  //         bookCategories.map(async (data) => {
-  //           const bookCategory = await bookCategoryModel.getBookCategory(
-  //             data.id
-  //           );
-  //           return bookCategory;
-  //         })
-  //       );
-  //     }
-  //
-  //     response.status(200).json(
-  //       httpResource({
-  //         success: true,
-  //         code: 200,
-  //         message: "Record has been created successfully.",
-  //         data: bookCategoriesDetails,
-  //       })
-  //     );
-  //   } catch (error) {
-  //     response.status(400).json(
-  //       httpResource({
-  //         success: false,
-  //         code: 400,
-  //         message: error,
-  //       })
-  //     );
-  //   }
-  // },
+  async getBooks(request, response) {
+    try {
+      const books = await bookModel.getBooks();
+      let booksDetails = [];
+      if (books.length > 0) {
+        booksDetails = await Promise.all(
+          books.map(async (data) => {
+            const details = await bookModel.getBook(data.id);
+            const bookCategory = await bookCategoryModel.getBookCategory(
+              details.book_category_id
+            );
+            details.book_category = Object.assign({}, bookCategory);
+            delete details.book_category_id;
+
+            return details;
+          })
+        );
+      }
+
+      response.status(200).json(
+        httpResource({
+          success: true,
+          code: 200,
+          message: "Record has been created successfully.",
+          data: booksDetails,
+        })
+      );
+    } catch (error) {
+      response.status(400).json(
+        httpResource({
+          success: false,
+          code: 400,
+          message: error,
+        })
+      );
+    }
+  },
   // async deleteBookCategory(request, response) {
   //   try {
   //     const id = parseInt(request.params.id);
