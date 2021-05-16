@@ -99,6 +99,11 @@ export default {
           {
             text: "Book Categories",
             to: { name: "dashboard-admin-book-category-view" },
+            icon: "mdi-book-variant-multiple",
+          },
+          {
+            text: "Books",
+            to: { name: "dashboard-admin-book-view" },
             icon: "mdi-bookshelf",
           },
           {

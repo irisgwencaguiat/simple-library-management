@@ -8,6 +8,7 @@ import courseStore from "@/store/modules/course/course-store";
 import sectionStore from "@/store/modules/section/section-store";
 import studentStore from "@/store/modules/student/student-store";
 import bookCategoryStore from "@/store/modules/book-category/book-category-store";
+import bookStore from "@/store/modules/book/book-store";
 
 Vue.use(Vuex);
 
@@ -21,5 +22,6 @@ export default new Vuex.Store({
     section: sectionStore,
     student: studentStore,
     bookCategory: bookCategoryStore,
+    book: bookStore,
   },
 });
