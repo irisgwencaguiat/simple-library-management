@@ -137,15 +137,17 @@ const bookController = {
   async updateBookDetails(request, response) {
     try {
       const { id, name, description, book_category_id } = request.body;
-      const bookFile = request.file || null;
-      const uploadedBook = await cloudinaryController.upload(bookFile, "books");
-
+      const preview = request.file || null;
+      const uploadedPreview = await cloudinaryController.upload(
+        preview,
+        "previews"
+      );
       const payload = {};
       if (name) payload.name = name;
       if (description) payload.description = description;
       if (book_category_id)
         payload.book_category_id = parseInt(book_category_id);
-      if (bookFile) payload.url = uploadedBook.url;
+      if (preview) payload.preview_url = uploadedPreview.url;
       const updatedBook = await bookModel.updateBookDetails(
         parseInt(id),
         payload

@@ -51,7 +51,7 @@ router.delete(
 router.put(
   "/",
   [
-    middleware.multer().single("book"),
+    middleware.multer().single("preview"),
     middleware.authentication.passportAuthenticate,
   ],
   bookController.updateBookDetails
