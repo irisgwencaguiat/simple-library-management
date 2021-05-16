@@ -32,4 +32,10 @@ router.put(
   middleware.authentication.passportAuthenticate,
   accountController.updateUserDetails
 );
+
+router.put(
+  "/password",
+  middleware.authentication.passportAuthenticate,
+  accountController.changePassword
+);
 module.exports = router;

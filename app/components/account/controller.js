@@ -159,6 +159,41 @@ const accountController = {
       );
     }
   },
+  async changePassword(request, response) {
+    try {
+      const id = parseInt(request.user.id);
+      const { old_password, new_password } = request.body;
+      const accountPassword = await accountModel.getPassword(id);
+      const isPlainTextValidated = utilityController.validateHashPassword(
+        old_password,
+        accountPassword
+      );
+      if (!isPlainTextValidated) throw "Incorrect Password";
+
+      const updatedAccount = await accountModel.updateAccount(id, {
+        password: utilityController.hashPassword(new_password),
+      });
+      if (!updatedAccount) throw "Account cannot be found.";
+      const accountDetails = await accountModel.getDetails(updatedAccount.id);
+      delete accountDetails.password;
+      response.status(200).json(
+        httpResource({
+          success: true,
+          code: 200,
+          message: "Record has been created successfully.",
+          data: accountDetails,
+        })
+      );
+    } catch (error) {
+      response.status(400).json(
+        httpResource({
+          success: false,
+          code: 400,
+          message: error,
+        })
+      );
+    }
+  },
 };
 
 module.exports = accountController;
