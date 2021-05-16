@@ -17,6 +17,14 @@ const loginActivityModel = {
       .andWhere("created_at", "<=", `${date}:23:59:59`)
       .then((result) => parseInt(result[0].count));
   },
+  async getCourseLogInActivityCountPerDay(course_id, date) {
+    return await knex("login_activity")
+      .countDistinct("account_id")
+      .where("course_id", course_id)
+      .andWhere("created_at", ">=", `${date}:00:00:00`)
+      .andWhere("created_at", "<=", `${date}:23:59:59`)
+      .then((result) => parseInt(result[0].count));
+  },
 };
 
 module.exports = loginActivityModel;

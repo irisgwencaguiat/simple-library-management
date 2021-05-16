@@ -14,7 +14,7 @@ const studentModel = {
     return await knex("student")
       .where("id", id)
       .andWhere("is_deleted", false)
-      .then((result) => result[0]);
+      .then((result) => result[0] || null);
   },
 
   async getStudents() {
@@ -23,7 +23,12 @@ const studentModel = {
       .orderBy("created_at", "desc")
       .then((result) => result || []);
   },
-
+  async getStudentByAccountId(account_id) {
+    return await knex("student")
+      .where("account_id", account_id)
+      .andWhere("is_deleted", false)
+      .then((result) => result[0] || null);
+  },
   async deleteStudent(id) {
     await knex("student").where("id", id).update("is_deleted", true);
   },

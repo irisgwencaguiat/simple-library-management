@@ -3,6 +3,7 @@ exports.up = function (knex) {
     table.increments();
     table.timestamp("created_at").defaultTo(knex.fn.now());
     table.integer("account_id").references("id").inTable("account");
+    table.integer("course_id").references("id").inTable("course");
   });
 };
 

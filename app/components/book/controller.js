@@ -227,7 +227,7 @@ const bookController = {
           success: true,
           code: 200,
           message: "Record has been created successfully.",
-          data: sortedBooks[0],
+          data: sortedBooks,
         })
       );
     } catch (error) {
