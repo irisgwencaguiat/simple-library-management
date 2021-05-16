@@ -9,13 +9,17 @@ import {
 
 const bookStore = {
   actions: {
-    async [CREATE_BOOK](_, { name, description, bookCategoryId, file }) {
+    async [CREATE_BOOK](
+      _,
+      { name, description, bookCategoryId, file, preview }
+    ) {
       try {
         const formData = new FormData();
         formData.append("name", name);
         formData.append("description", description);
         formData.append("book_category_id", bookCategoryId);
         formData.append("book", file);
+        formData.append("preview", preview);
         const response = await apiService.post("/book", formData);
         return response.data;
       } catch (error) {
@@ -23,13 +27,17 @@ const bookStore = {
       }
     },
 
-    async [UPDATE_BOOK](_, { id, name, description, bookCategoryId, file }) {
+    async [UPDATE_BOOK](
+      _,
+      { id, name, description, bookCategoryId, file, preview }
+    ) {
       try {
         const formData = new FormData();
         formData.append("id", id);
         formData.append("name", name);
         formData.append("description", description);
         formData.append("book_category_id", bookCategoryId);
+        formData.append("preview", preview);
         if (file) formData.append("book", file);
         const response = await apiService.put("/book", formData);
         return response.data;

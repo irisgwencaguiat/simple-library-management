@@ -37,6 +37,7 @@ const bookController = {
         })
       );
     } catch (error) {
+      console.log(error);
       response.status(400).json(
         httpResource({
           success: false,
@@ -138,16 +139,18 @@ const bookController = {
     try {
       const { id, name, description, book_category_id } = request.body;
       const preview = request.file || null;
-      const uploadedPreview = await cloudinaryController.upload(
-        preview,
-        "previews"
-      );
       const payload = {};
+      if (preview) {
+        const uploadedPreview = await cloudinaryController.upload(
+          preview,
+          "previews"
+        );
+        payload.preview_url = uploadedPreview.url;
+      }
       if (name) payload.name = name;
       if (description) payload.description = description;
       if (book_category_id)
         payload.book_category_id = parseInt(book_category_id);
-      if (preview) payload.preview_url = uploadedPreview.url;
       const updatedBook = await bookModel.updateBookDetails(
         parseInt(id),
         payload

@@ -26,6 +26,11 @@
           ></v-text-field>
         </v-card-text>
       </template>
+      <template v-slot:item.preview="{ item }">
+        <v-avatar tile :size="30">
+          <v-img :src="item.preview_url"></v-img>
+        </v-avatar>
+      </template>
       <template v-slot:item.category="{ item }">
         <span class="text-capitalize">{{ item.book_category.name }}</span>
       </template>
@@ -90,22 +95,32 @@
             </v-col>
             <v-col cols="12" v-if="formDialogOperation === 'create'">
               <v-file-input
-                accept="application/pdf"
-                label="File"
-                outlined
-                v-model="form.file"
+                accept="image/png, image/jpeg, image/bmp"
                 prepend-icon=""
-                prepend-inner-icon="mdi-file"
+                prepend-inner-icon="mdi-camera"
+                label="Preview"
+                outlined
+                v-model="form.preview"
               ></v-file-input>
             </v-col>
             <v-col cols="12" v-if="formDialogOperation === 'update'">
               <v-file-input
-                accept="application/pdf"
-                label="New File"
+                accept="image/png, image/jpeg, image/bmp"
+                prepend-icon=""
+                prepend-inner-icon="mdi-camera"
+                label="New Preview"
                 outlined
-                v-model="form.file"
+                v-model="form.preview"
+              ></v-file-input>
+            </v-col>
+            <v-col cols="12" v-if="formDialogOperation === 'create'">
+              <v-file-input
+                accept="application/pdf"
                 prepend-icon=""
                 prepend-inner-icon="mdi-file"
+                label="File"
+                outlined
+                v-model="form.file"
               ></v-file-input>
             </v-col>
           </v-row>
@@ -162,6 +177,7 @@ const defaultForm = {
   description: null,
   bookCategoryId: null,
   file: null,
+  preview: null,
 };
 
 export default {
@@ -208,6 +224,11 @@ export default {
 
     tableHeaders() {
       return [
+        {
+          text: "Preview",
+          value: "preview",
+          sortable: false,
+        },
         {
           text: "Name",
           value: "name",
@@ -301,6 +322,7 @@ export default {
         description: this.form.description.trim() || null,
         bookCategoryId: this.form.bookCategoryId || null,
         file: this.form.file || null,
+        preview: this.form.preview || null,
       };
       const { success, message } = await this.$store.dispatch(
         CREATE_BOOK,
@@ -332,6 +354,7 @@ export default {
         description: this.form.description.trim() || null,
         bookCategoryId: this.form.bookCategoryId || null,
         file: this.form.file || null,
+        preview: this.form.preview || null,
       };
       const { success, message } = await this.$store.dispatch(
         UPDATE_BOOK,
