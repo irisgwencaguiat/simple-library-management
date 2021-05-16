@@ -201,6 +201,45 @@ const bookController = {
       );
     }
   },
+  async mostViewedBook(request, response) {
+    try {
+      const books = await bookModel.getBooks();
+      const booksDetails = await Promise.all(
+        books.map(async (data) => {
+          const book = data;
+          const bookCategory = await bookCategoryModel.getBookCategory(
+            book.book_category_id
+          );
+          book.book_category = Object.assign({}, bookCategory);
+          book.view = await viewModel.getBookViewTotalCount(data.id);
+          delete book.book_category_id;
+          return book;
+        })
+      );
+      const sortedBooks = await booksDetails.sort((a, b) => {
+        if (a.view > b.view) return -1;
+        if (a.view < b.view) return 1;
+        if (a.view === b.view) return 0;
+      });
+
+      response.status(200).json(
+        httpResource({
+          success: true,
+          code: 200,
+          message: "Record has been created successfully.",
+          data: sortedBooks[0],
+        })
+      );
+    } catch (error) {
+      response.status(400).json(
+        httpResource({
+          success: false,
+          code: 400,
+          message: error,
+        })
+      );
+    }
+  },
 };
 
 module.exports = bookController;

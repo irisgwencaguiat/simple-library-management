@@ -24,6 +24,12 @@ router.get(
 );
 
 router.get(
+  "/view",
+  middleware.authentication.passportAuthenticate,
+  bookController.mostViewedBook
+);
+
+router.get(
   "/:id",
   middleware.authentication.passportAuthenticate,
   bookController.getBook
