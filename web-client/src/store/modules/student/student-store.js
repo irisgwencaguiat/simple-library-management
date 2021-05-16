@@ -10,7 +10,15 @@ const studentStore = {
   actions: {
     async [CREATE_STUDENT](
       _,
-      { firstName, lastName, studentNumber, collegeId, courseId, sectionId }
+      {
+        firstName,
+        lastName,
+        studentNumber,
+        collegeId,
+        courseId,
+        sectionId,
+        type,
+      }
     ) {
       try {
         const response = await apiService.post("/student", {
@@ -20,6 +28,7 @@ const studentStore = {
           college_id: collegeId,
           course_id: courseId,
           section_id: sectionId,
+          account_type: type,
         });
         return response.data;
       } catch (error) {
