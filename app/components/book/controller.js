@@ -8,15 +8,19 @@ const bookController = {
   async createBook(request, response) {
     try {
       const { name, description, book_category_id } = request.body;
-
-      const bookFile = request.file || null;
+      const bookFile = request.files.book[0] || null;
+      const preview = request.files.preview[0] || null;
       const uploadedBook = await cloudinaryController.upload(bookFile, "books");
-
+      const uploadedPreview = await cloudinaryController.upload(
+        preview,
+        "previews"
+      );
       const book = await bookModel.createBook({
         name,
         description: description || null,
         book_category_id: parseInt(book_category_id),
         url: uploadedBook.url,
+        preview_url: uploadedPreview.url,
       });
       const details = await bookModel.getBook(book.id);
       const bookCategory = await bookCategoryModel.getBookCategory(
@@ -133,21 +137,17 @@ const bookController = {
   async updateBookDetails(request, response) {
     try {
       const { id, name, description, book_category_id } = request.body;
-      const bookFile = request.file || null;
+      const preview = request.file || null;
+      const uploadedPreview = await cloudinaryController.upload(
+        preview,
+        "previews"
+      );
       const payload = {};
-      const gotBook = await bookModel.getBook(id);
       if (name) payload.name = name;
       if (description) payload.description = description;
       if (book_category_id)
         payload.book_category_id = parseInt(book_category_id);
-      payload.url = gotBook.url;
-      if (bookFile) {
-        const uploadedBook = await cloudinaryController.upload(
-          bookFile,
-          "books"
-        );
-        if (bookFile) payload.url = uploadedBook.url;
-      }
+      if (preview) payload.preview_url = uploadedPreview.url;
       const updatedBook = await bookModel.updateBookDetails(
         parseInt(id),
         payload
@@ -168,7 +168,6 @@ const bookController = {
         })
       );
     } catch (error) {
-      console.log(error);
       response.status(400).json(
         httpResource({
           success: false,
@@ -235,6 +234,42 @@ const bookController = {
           code: 200,
           message: "Record has been created successfully.",
           data: sortedBooks,
+        })
+      );
+    } catch (error) {
+      response.status(400).json(
+        httpResource({
+          success: false,
+          code: 400,
+          message: error,
+        })
+      );
+    }
+  },
+  async getBooksByCategory(request, response) {
+    try {
+      const { book_category_id } = request.params;
+      const books = await bookModel.getBooksByCategory(
+        parseInt(book_category_id)
+      );
+      const booksDetails = await Promise.all(
+        books.map(async (data) => {
+          const details = await bookModel.getBook(data.id);
+          const bookCategory = await bookCategoryModel.getBookCategory(
+            details.book_category_id
+          );
+          details.book_category = Object.assign({}, bookCategory);
+          delete details.book_category_id;
+          return details;
+        })
+      );
+
+      response.status(200).json(
+        httpResource({
+          success: true,
+          code: 200,
+          message: "Record has been created successfully.",
+          data: booksDetails,
         })
       );
     } catch (error) {

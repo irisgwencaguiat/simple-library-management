@@ -5,8 +5,9 @@ const middleware = require("../../middleware");
 
 router.post(
   "/",
+
   [
-    middleware.multer().single("book"),
+    middleware.multer().fields([{ name: "book" }, { name: "preview" }]),
     middleware.authentication.passportAuthenticate,
   ],
   bookController.createBook
@@ -30,6 +31,12 @@ router.get(
 );
 
 router.get(
+  "/category/:book_category_id",
+  middleware.authentication.passportAuthenticate,
+  bookController.getBooksByCategory
+);
+
+router.get(
   "/:id",
   middleware.authentication.passportAuthenticate,
   bookController.getBook
@@ -44,7 +51,7 @@ router.delete(
 router.put(
   "/",
   [
-    middleware.multer().single("book"),
+    middleware.multer().single("preview"),
     middleware.authentication.passportAuthenticate,
   ],
   bookController.updateBookDetails
