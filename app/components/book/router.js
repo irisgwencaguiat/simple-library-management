@@ -5,8 +5,9 @@ const middleware = require("../../middleware");
 
 router.post(
   "/",
+
   [
-    middleware.multer().single("book"),
+    middleware.multer().fields([{ name: "book" }, { name: "preview" }]),
     middleware.authentication.passportAuthenticate,
   ],
   bookController.createBook
