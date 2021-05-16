@@ -1,6 +1,7 @@
 import localStorageService from "@/services/local-storage-service";
 import apiService from "@/services/api-service";
 import {
+  AUTHENTICATION_GET_TODAY_LOGIN,
   AUTHENTICATION_LOGIN,
   PURGE_AUTHENTICATION_DETAILS,
   REFRESH_AUTHENTICATION_DETAILS,
@@ -61,6 +62,15 @@ const authenticationStore = {
         commit(SET_AUTHENTICATION_DETAILS, { token, user });
       } catch (_) {
         commit(PURGE_AUTHENTICATION_DETAILS);
+      }
+    },
+
+    async [AUTHENTICATION_GET_TODAY_LOGIN](_, date) {
+      try {
+        const response = await apiService.get(`/authentication/log-in/${date}`);
+        return response.data;
+      } catch (error) {
+        return error.response.data;
       }
     },
   },
