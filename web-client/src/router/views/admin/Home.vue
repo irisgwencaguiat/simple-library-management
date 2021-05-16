@@ -1,7 +1,7 @@
 <template>
   <section>
     <v-card-title
-      ><span class="mr-1">Dashboard</span>
+      ><span class="mr-1 display-1">Dashboard</span>
       <v-spacer></v-spacer>
       <v-chip color="primary" small :disabled="isGetTodayLoginStart">
         Today's Login:
@@ -10,11 +10,7 @@
     </v-card-title>
     <div class="mb-5"></div>
     <v-card outlined>
-      <v-card-title>
-        <v-chip color="primary" small :disabled="isGetBookViewsStart">
-          Most Viewed Books
-        </v-chip>
-      </v-card-title>
+      <v-card-title> Most Viewed Books </v-card-title>
       <v-data-table
         :items="bookViews"
         :headers="bookViewsTableHeaders"
