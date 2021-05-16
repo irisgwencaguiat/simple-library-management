@@ -2,6 +2,7 @@ import apiService from "@/services/api-service";
 import {
   CREATE_BOOK,
   DELETE_BOOK,
+  GET_BOOK_VIEW,
   GET_BOOKS,
   UPDATE_BOOK,
 } from "@/store/modules/book/book-types";
@@ -40,6 +41,15 @@ const bookStore = {
     async [GET_BOOKS]() {
       try {
         const response = await apiService.get("/book");
+        return response.data;
+      } catch (error) {
+        return error.response.data;
+      }
+    },
+
+    async [GET_BOOK_VIEW]() {
+      try {
+        const response = await apiService.get("/book/view");
         return response.data;
       } catch (error) {
         return error.response.data;
