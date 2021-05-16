@@ -1,5 +1,6 @@
 const bookModel = require("./model");
 const bookCategoryModel = require("../book-category/model");
+const viewModel = require("../view/model");
 const cloudinaryController = require("../cloudinary/controller");
 const httpResource = require("../../http-resource");
 
@@ -158,6 +159,36 @@ const bookController = {
           code: 200,
           message: "Record has been created successfully.",
           data: details,
+        })
+      );
+    } catch (error) {
+      response.status(400).json(
+        httpResource({
+          success: false,
+          code: 400,
+          message: error,
+        })
+      );
+    }
+  },
+  async createBookView(request, response) {
+    try {
+      const { id, account_id } = request.body;
+      const doesViewExist = await viewModel.doesViewExist(id, account_id);
+      if (!doesViewExist) {
+        await viewModel.createBookView({
+          book_id: id,
+          account_id,
+        });
+      }
+
+      const bookView = await viewModel.getBookViewTotalCount(id);
+      response.status(200).json(
+        httpResource({
+          success: true,
+          code: 200,
+          message: "Record has been created successfully.",
+          data: bookView,
         })
       );
     } catch (error) {

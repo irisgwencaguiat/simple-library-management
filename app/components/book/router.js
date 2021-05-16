@@ -11,6 +11,11 @@ router.post(
   ],
   bookController.createBook
 );
+router.post(
+  "/view",
+  middleware.authentication.passportAuthenticate,
+  bookController.createBookView
+);
 
 router.get(
   "/",
