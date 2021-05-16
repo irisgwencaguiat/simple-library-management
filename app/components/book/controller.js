@@ -134,14 +134,20 @@ const bookController = {
     try {
       const { id, name, description, book_category_id } = request.body;
       const bookFile = request.file || null;
-      const uploadedBook = await cloudinaryController.upload(bookFile, "books");
-
       const payload = {};
+      const gotBook = await bookModel.getBook(id);
       if (name) payload.name = name;
       if (description) payload.description = description;
       if (book_category_id)
         payload.book_category_id = parseInt(book_category_id);
-      if (bookFile) payload.url = uploadedBook.url;
+      payload.url = gotBook.url;
+      if (bookFile) {
+        const uploadedBook = await cloudinaryController.upload(
+          bookFile,
+          "books"
+        );
+        if (bookFile) payload.url = uploadedBook.url;
+      }
       const updatedBook = await bookModel.updateBookDetails(
         parseInt(id),
         payload
@@ -162,6 +168,7 @@ const bookController = {
         })
       );
     } catch (error) {
+      console.log(error);
       response.status(400).json(
         httpResource({
           success: false,

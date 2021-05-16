@@ -88,10 +88,20 @@
                 v-model="form.bookCategoryId"
               ></v-autocomplete>
             </v-col>
-            <v-col cols="12">
+            <v-col cols="12" v-if="formDialogOperation === 'create'">
               <v-file-input
                 accept="application/pdf"
                 label="File"
+                outlined
+                v-model="form.file"
+                prepend-icon=""
+                prepend-inner-icon="mdi-file"
+              ></v-file-input>
+            </v-col>
+            <v-col cols="12" v-if="formDialogOperation === 'update'">
+              <v-file-input
+                accept="application/pdf"
+                label="New File"
                 outlined
                 v-model="form.file"
                 prepend-icon=""
@@ -189,7 +199,11 @@ export default {
 
     isFormValid() {
       const { name, description, bookCategoryId, file } = this.form;
-      return name && description && bookCategoryId && file;
+      const validations = {
+        create: name && description && bookCategoryId && file,
+        update: name && description && bookCategoryId,
+      };
+      return validations[this.formDialogOperation];
     },
 
     tableHeaders() {
@@ -257,11 +271,11 @@ export default {
     openUpdateFormDialog(book) {
       this.formDialogOperation = "update";
       this.selectedBook = Object.assign({}, book);
-      const { name, short_name, college } = book;
+      const { name, description, book_category } = book;
       this.form = Object.assign(this.form, {
         name,
-        description: short_name,
-        bookCategoryId: college.id,
+        description,
+        bookCategoryId: book_category.id,
       });
       this.isFormDialogOpen = true;
     },
@@ -316,6 +330,7 @@ export default {
         name: this.form.name.trim() || null,
         description: this.form.description.trim() || null,
         bookCategoryId: this.form.bookCategoryId || null,
+        file: this.form.file || null,
       };
       const { success, message } = await this.$store.dispatch(
         UPDATE_BOOK,

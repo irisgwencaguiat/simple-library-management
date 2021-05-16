@@ -25,10 +25,11 @@ const bookStore = {
     async [UPDATE_BOOK](_, { id, name, description, bookCategoryId, file }) {
       try {
         const formData = new FormData();
+        formData.append("id", id);
         formData.append("name", name);
         formData.append("description", description);
         formData.append("book_category_id", bookCategoryId);
-        formData.append("book", file);
+        if (file) formData.append("book", file);
         const response = await apiService.put("/book", formData);
         return response.data;
       } catch (error) {
