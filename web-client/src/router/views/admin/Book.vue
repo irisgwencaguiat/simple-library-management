@@ -253,11 +253,12 @@ export default {
     tableItems() {
       if (!this.search) return this.books;
       return this.books.filter((book) => {
-        const { name, short_name, college } = book;
+        const { name, description, book_category } = book;
         const keyword = this.search.toLowerCase().trim();
         if (name.toLowerCase().trim().includes(keyword)) return book;
-        if (short_name.toLowerCase().trim().includes(keyword)) return book;
-        if (college.name.toLowerCase().trim().includes(keyword)) return book;
+        if (description.toLowerCase().trim().includes(keyword)) return book;
+        if (book_category.name.toLowerCase().trim().includes(keyword))
+          return book;
       });
     },
   },
@@ -357,7 +358,6 @@ export default {
     async getBooks() {
       this.isGetBooksStart = true;
       const { data } = await this.$store.dispatch(GET_BOOKS);
-      console.log(data);
       this.books = data;
       this.isGetBooksStart = false;
     },
