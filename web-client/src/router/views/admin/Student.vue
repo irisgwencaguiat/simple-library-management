@@ -360,6 +360,7 @@ export default {
         collegeId: this.form.collegeId || null,
         courseId: this.form.courseId || null,
         sectionId: this.form.sectionId || null,
+        type: "student",
       };
       const { success, message } = await this.$store.dispatch(
         CREATE_STUDENT,
@@ -393,6 +394,7 @@ export default {
         collegeId: this.form.collegeId || null,
         courseId: this.form.courseId || null,
         sectionId: this.form.sectionId || null,
+        type: "student",
       };
       const { success, message } = await this.$store.dispatch(
         UPDATE_STUDENT,

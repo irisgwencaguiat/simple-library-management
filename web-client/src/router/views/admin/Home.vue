@@ -10,6 +10,21 @@
     </v-card-title>
     <div class="mb-5"></div>
     <v-card outlined>
+      <v-card-title> Course Logins </v-card-title>
+      <v-data-table
+        :items="courseLogins"
+        :headers="courseLoginsTableHeaders"
+        :loading="isGetCourseLoginsStart"
+      >
+        <template v-slot:item.course="{ item }">
+          <span class="text-capitalize font-weight-bold">{{
+            item.course.name
+          }}</span>
+        </template>
+      </v-data-table>
+    </v-card>
+    <div class="mb-5"></div>
+    <v-card outlined>
       <v-card-title> Most Viewed Books </v-card-title>
       <v-data-table
         :items="bookViews"
@@ -28,7 +43,10 @@
 </template>
 
 <script>
-import { AUTHENTICATION_GET_TODAY_LOGIN } from "@/store/modules/authentication/authentication-types";
+import {
+  AUTHENTICATION_GET_COURSE_LOGIN,
+  AUTHENTICATION_GET_TODAY_LOGIN,
+} from "@/store/modules/authentication/authentication-types";
 import moment from "moment";
 import { GET_BOOK_VIEW } from "@/store/modules/book/book-types";
 
@@ -39,6 +57,8 @@ export default {
       todayLogin: 0,
       isGetBookViewsStart: false,
       bookViews: [],
+      isGetCourseLoginsStart: false,
+      courseLogins: [],
     };
   },
 
@@ -64,15 +84,34 @@ export default {
         },
       ];
     },
+
+    courseLoginsTableHeaders() {
+      return [
+        {
+          text: "Course",
+          value: "course",
+          sortable: false,
+        },
+
+        {
+          text: "# of Logins",
+          value: "login_count",
+          sortable: true,
+        },
+      ];
+    },
+
+    currentDate() {
+      return moment().format("YYYY-MM-DD");
+    },
   },
 
   methods: {
     async getTodayLogin() {
       this.isGetTodayLoginStart = true;
-      const currentDay = moment().format("YYYY-MM-DD");
       const { data } = await this.$store.dispatch(
         AUTHENTICATION_GET_TODAY_LOGIN,
-        currentDay
+        this.currentDate
       );
       this.todayLogin = data.login_count || 0;
       this.isGetTodayLoginStart = false;
@@ -84,11 +123,23 @@ export default {
       this.bookViews = data;
       this.isGetBookViewsStart = false;
     },
+
+    async getCourseLogins() {
+      this.isGetCourseLoginsStart = true;
+      const { data } = await this.$store.dispatch(
+        AUTHENTICATION_GET_COURSE_LOGIN,
+        this.currentDate
+      );
+      console.log(data);
+      this.courseLogins = data;
+      this.isGetCourseLoginsStart = false;
+    },
   },
 
   async created() {
     await this.getTodayLogin();
     await this.getBookViews();
+    await this.getCourseLogins();
   },
 };
 </script>

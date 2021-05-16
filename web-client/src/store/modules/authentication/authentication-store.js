@@ -1,6 +1,7 @@
 import localStorageService from "@/services/local-storage-service";
 import apiService from "@/services/api-service";
 import {
+  AUTHENTICATION_GET_COURSE_LOGIN,
   AUTHENTICATION_GET_TODAY_LOGIN,
   AUTHENTICATION_LOGIN,
   PURGE_AUTHENTICATION_DETAILS,
@@ -68,6 +69,17 @@ const authenticationStore = {
     async [AUTHENTICATION_GET_TODAY_LOGIN](_, date) {
       try {
         const response = await apiService.get(`/authentication/log-in/${date}`);
+        return response.data;
+      } catch (error) {
+        return error.response.data;
+      }
+    },
+
+    async [AUTHENTICATION_GET_COURSE_LOGIN](_, date) {
+      try {
+        const response = await apiService.get(
+          `/authentication/log-in/course/${date}`
+        );
         return response.data;
       } catch (error) {
         return error.response.data;

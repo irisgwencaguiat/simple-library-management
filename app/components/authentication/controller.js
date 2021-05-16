@@ -30,16 +30,13 @@ const authenticationController = {
         details,
         process.env.AUTHENTICATION_SECRET_OR_KEY
       );
-      let course_id;
       if (details.account_type === "student") {
         const student = await studentModel.getStudentByAccountId(details.id);
-
-        course_id = student.course_id;
+        await loginActivityModel.createLoginActivity({
+          account_id: details.id,
+          course_id: student.course_id || null,
+        });
       }
-      await loginActivityModel.createLoginActivity({
-        account_id: details.id,
-        course_id: course_id || null,
-      });
       response.status(200).json(
         httpResource({
           success: true,
