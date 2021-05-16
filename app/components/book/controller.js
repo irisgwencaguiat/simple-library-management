@@ -240,6 +240,42 @@ const bookController = {
       );
     }
   },
+  async getBooksByCategory(request, response) {
+    try {
+      const { book_category_id } = request.params;
+      const books = await bookModel.getBooksByCategory(
+        parseInt(book_category_id)
+      );
+      const booksDetails = await Promise.all(
+        books.map(async (data) => {
+          const details = await bookModel.getBook(data.id);
+          const bookCategory = await bookCategoryModel.getBookCategory(
+            details.book_category_id
+          );
+          details.book_category = Object.assign({}, bookCategory);
+          delete details.book_category_id;
+          return details;
+        })
+      );
+
+      response.status(200).json(
+        httpResource({
+          success: true,
+          code: 200,
+          message: "Record has been created successfully.",
+          data: booksDetails,
+        })
+      );
+    } catch (error) {
+      response.status(400).json(
+        httpResource({
+          success: false,
+          code: 400,
+          message: error,
+        })
+      );
+    }
+  },
 };
 
 module.exports = bookController;

@@ -33,6 +33,12 @@ const bookModel = {
       .returning(["id"])
       .then((result) => result[0] || null);
   },
+  async getBooksByCategory(id) {
+    return await knex("book")
+      .where("is_deleted", false)
+      .andWhere("book_category_id", id)
+      .then((result) => result || []);
+  },
 };
 
 module.exports = bookModel;

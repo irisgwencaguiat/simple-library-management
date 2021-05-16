@@ -30,6 +30,12 @@ router.get(
 );
 
 router.get(
+  "/category/:book_category_id",
+  middleware.authentication.passportAuthenticate,
+  bookController.getBooksByCategory
+);
+
+router.get(
   "/:id",
   middleware.authentication.passportAuthenticate,
   bookController.getBook
