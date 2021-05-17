@@ -1,10 +1,12 @@
 import apiService from "@/services/api-service";
 import {
+  CHANGE_ACCOUNT_PASSWORD,
   CREATE_ACCOUNT,
   DELETE_ACCOUNT,
   GET_ACCOUNTS,
   UPDATE_ACCOUNT,
 } from "@/store/modules/account/account-types";
+import { AUTHENTICATION_CHANGE_PASSWORD } from "@/store/modules/authentication/authentication-types";
 
 const accountStore = {
   actions: {
@@ -53,6 +55,17 @@ const accountStore = {
     async [DELETE_ACCOUNT](_, id) {
       try {
         const response = await apiService.delete(`/account/${id}`);
+        return response.data;
+      } catch (error) {
+        return error.response.data;
+      }
+    },
+    async [CHANGE_ACCOUNT_PASSWORD]({ commit }, { oldPassword, newPassword }) {
+      try {
+        const response = await apiService.put("/account/password", {
+          old_password: oldPassword,
+          new_password: newPassword,
+        });
         return response.data;
       } catch (error) {
         return error.response.data;

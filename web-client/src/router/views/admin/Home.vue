@@ -130,7 +130,6 @@ export default {
         AUTHENTICATION_GET_COURSE_LOGIN,
         this.currentDate
       );
-      console.log(data);
       this.courseLogins = data;
       this.isGetCourseLoginsStart = false;
     },
