@@ -1,7 +1,14 @@
 <template>
   <section>
-    <v-card-title
-      ><span class="mr-1 display-1">Dashboard</span>
+    <v-list-item two-line>
+      <v-list-item-content>
+        <v-list-item-title class="display-1"> Dashboard </v-list-item-title>
+        <v-list-item-subtitle>{{
+          formatDate(this.currentDate)
+        }}</v-list-item-subtitle>
+      </v-list-item-content>
+    </v-list-item>
+    <v-card-title>
       <v-spacer></v-spacer>
       <v-chip color="primary" small :disabled="isGetTodayLoginStart">
         Today's Login:
@@ -49,8 +56,11 @@ import {
 } from "@/store/modules/authentication/authentication-types";
 import moment from "moment";
 import { GET_BOOK_VIEW } from "@/store/modules/book/book-types";
+import dateMixin from "@/mixins/date-mixin";
 
 export default {
+  mixins: [dateMixin],
+
   data() {
     return {
       isGetTodayLoginStart: false,
