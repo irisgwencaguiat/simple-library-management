@@ -6,9 +6,7 @@ import localStorageService from "./local-storage-service";
 const apiService = {
   init: () => {
     Vue.use(vueAxios, axios);
-    Vue.axios.defaults.baseURL = `http://localhost:${
-      process.env.PORT || 3000
-    }/api`;
+    Vue.axios.defaults.baseURL = "/api";
   },
 
   setHeader() {
