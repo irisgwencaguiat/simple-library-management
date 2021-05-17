@@ -4,9 +4,10 @@
   "description": "",
   "main": "app/server.js",
   "scripts": {
-    "dev:backend": "nodemon app/server",
+    "dev:backend": "nodemon app/server.js",
     "dev:frontend": "npm run serve --prefix web-client",
-    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\""
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "start": "node app/server.js"
   },
   "repository": {
     "type": "git",
