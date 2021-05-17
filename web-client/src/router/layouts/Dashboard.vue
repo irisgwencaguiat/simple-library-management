@@ -61,7 +61,12 @@
       </v-list>
     </v-navigation-drawer>
     <global-notification-snackbar></global-notification-snackbar>
-    <v-dialog v-model="isAccountFormDialogOpen" width="500" persistent>
+    <v-dialog
+      v-model="isAccountFormDialogOpen"
+      width="500"
+      persistent
+      v-if="user"
+    >
       <v-card>
         <v-card-title>
           <span> Account Information </span>
@@ -223,6 +228,13 @@ export default {
             text: "Section",
             to: { name: "dashboard-admin-section-view" },
             icon: "mdi-google-classroom",
+          },
+        ],
+        student: [
+          {
+            text: "Books",
+            to: { name: "dashboard-student-book-view" },
+            icon: "mdi-bookshelf",
           },
         ],
       };

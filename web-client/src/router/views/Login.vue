@@ -100,7 +100,7 @@ export default {
         password: this.form.password || null,
       };
       this.isLoginStart = true;
-      const { success, message } = await this.$store.dispatch(
+      const { success, message, data } = await this.$store.dispatch(
         AUTHENTICATION_LOGIN,
         payload
       );
@@ -113,6 +113,8 @@ export default {
       this.error = false;
       this.errorMessage = null;
       this.isLoginStart = false;
+      if (data.user.account_type === "student")
+        return await this.$router.push({ name: "dashboard-student-book-view" });
       await this.$router.push({ name: "dashboard-admin-home-view" });
     },
   },

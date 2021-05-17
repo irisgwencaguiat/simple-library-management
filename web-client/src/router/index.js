@@ -63,6 +63,12 @@ const routes = [
         name: "dashboard-admin-book-view",
         component: () => import("@/router/views/admin/Book"),
       },
+
+      {
+        path: "public-book",
+        name: "dashboard-student-book-view",
+        component: () => import("@/router/views/admin/PublicBook"),
+      },
     ],
     meta: {
       requiresAuth: true,

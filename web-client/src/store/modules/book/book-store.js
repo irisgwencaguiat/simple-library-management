@@ -1,5 +1,6 @@
 import apiService from "@/services/api-service";
 import {
+  BOOK_VIEW,
   CREATE_BOOK,
   DELETE_BOOK,
   GET_BOOK_VIEW,
@@ -58,6 +59,18 @@ const bookStore = {
     async [GET_BOOK_VIEW]() {
       try {
         const response = await apiService.get("/book/view");
+        return response.data;
+      } catch (error) {
+        return error.response.data;
+      }
+    },
+
+    async [BOOK_VIEW](_, { bookId, accountId }) {
+      try {
+        const response = await apiService.post("/book/view", {
+          id: bookId,
+          account_id: accountId,
+        });
         return response.data;
       } catch (error) {
         return error.response.data;

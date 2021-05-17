@@ -235,11 +235,6 @@ export default {
           sortable: false,
         },
         {
-          text: "Description",
-          value: "description",
-          sortable: false,
-        },
-        {
           text: "Category",
           value: "category",
           sortable: false,
