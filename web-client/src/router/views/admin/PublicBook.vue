@@ -8,6 +8,7 @@
             outlined
             label="Search"
             append-icon="mdi-magnify"
+            v-model="search"
           ></v-text-field>
         </v-col>
         <v-col cols="12">
@@ -69,12 +70,29 @@ export default {
       selectedBookCategory: "All",
       isGetBooksStart: false,
       books: [],
+      search: null,
     };
   },
 
   computed: {
     displayedBooks() {
-      return this.books;
+      if (!this.search && this.selectedBookCategory === "All")
+        return this.books;
+      const searchFunction = (book) => {
+        const { name, description, book_category } = book;
+        const keyword = this.search.toLowerCase().trim();
+        if (name.toLowerCase().trim().includes(keyword)) return book;
+        if (description.toLowerCase().trim().includes(keyword)) return book;
+        if (book_category.name.toLowerCase().trim().includes(keyword))
+          return book;
+      };
+      const filterFunction = (book) =>
+        book.book_category.name === this.selectedBookCategory;
+      if (this.search && this.selectedBookCategory === "All")
+        return this.books.filter(searchFunction);
+      if (!this.search && this.selectedBookCategory !== "All")
+        return this.books.filter(filterFunction);
+      return this.books.filter(filterFunction).filter(searchFunction);
     },
   },
 
