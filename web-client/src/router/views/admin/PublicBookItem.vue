@@ -42,17 +42,14 @@ export default {
   },
 
   methods: {
-    openFile(url) {
+    async openFile(url) {
+      const payload = {
+        bookId: this.book.id,
+        accountId: this.user.id,
+      };
+      await this.$store.dispatch(BOOK_VIEW, payload);
       window.open(url);
     },
-  },
-
-  async mounted() {
-    const payload = {
-      bookId: this.book.id,
-      accountId: this.user.id,
-    };
-    await this.$store.dispatch(BOOK_VIEW, payload);
   },
 };
 </script>

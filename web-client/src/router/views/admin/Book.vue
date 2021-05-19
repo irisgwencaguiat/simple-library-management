@@ -214,9 +214,9 @@ export default {
     },
 
     isFormValid() {
-      const { name, description, bookCategoryId, file } = this.form;
+      const { name, description, bookCategoryId, file, preview } = this.form;
       const validations = {
-        create: name && description && bookCategoryId && file,
+        create: name && description && bookCategoryId && file && preview,
         update: name && description && bookCategoryId,
       };
       return validations[this.formDialogOperation];
